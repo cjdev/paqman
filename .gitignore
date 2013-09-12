@@ -1,0 +1,8 @@
+.cache
+.classpath
+.project
+.settings
+target
+*~
+/data
+config.json

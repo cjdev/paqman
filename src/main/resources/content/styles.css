@@ -1,0 +1,344 @@
+
+.title {
+    font-family:monospace;
+    font-size:48pt;
+    font-weight:bold;
+	color: #3B4858;
+}
+
+.subtext {
+	font-style: italic;
+	vertical-align: top;
+	display: inline-block;
+	margin-left: 65px;
+	margin-top: 27px;
+	font-size: 12pt;
+}
+
+.logo {
+   height:200px;
+}
+
+.header {
+   border-bottom: 4px solid grey;
+}
+
+.tag {
+   border-radius:10px;
+   border:2px solid grey;
+   display:inline-block;
+   margin:5px;
+   padding:5px;
+   background:#dddddd;
+}
+
+.scoreboard {
+   float:right;
+}
+
+.user-details-area {
+   position:absolute;
+   right:0;
+}
+
+.qualification-hunks {
+   float:left;
+   border-right:3px solid grey;
+   margin:5px;
+   padding:5px;
+   height:500px;
+   position:absolute;
+   width:200px;
+}
+
+.qualification-hunks li {
+   margin:5px;
+   padding:5px;
+}
+
+.qualification-hunks li a {
+   color:black;
+}
+
+.qualification-hunks li.selected a {
+   color:white;
+}
+
+.qualification-hunks li.selected{
+   background:grey;
+}
+
+.quals-list li{
+	font-weight:bold;
+	font-size:150%;
+	border:2px solid grey;
+	border-radius:5px;
+	margin: 10px;
+	padding: 5px;
+	background: #eeeeee;
+	display:block;
+}
+
+.qual-status-links {
+	display:block;
+}
+.qual-status-links a {
+	color:#3B4858;
+}
+
+.quals-list {
+	list-style:none;
+	padding:0px;
+}
+.qual-title:followed {
+	color:grey;
+}
+.qual-title {
+	color:#3B4858;
+	font-weight:bold;
+	font-size:150%;
+	display:block;
+}
+
+.qual-description {
+	font-style: italic;
+	font-size: 12pt;
+	font-weight: normal;
+	margin-top: 5px;
+	display:block;
+}
+
+.user-status-list-entry {
+	
+	margin-left:10px;
+}
+
+body {
+
+    font-family:monospace;
+}
+
+.content-holder {
+   width:100%;
+}
+
+.content {
+   margin:5px;
+   margin-left:220px;
+   text-align:center;
+   display:block;
+}
+
+.content-title {
+	font-size:200%;
+	margin-bottom:20px;
+}
+
+video {
+  border:3px solid grey;
+  border-radius:5px;
+  max-height:90%;
+  max-width:90%;
+}
+
+.certification-section {
+	/*
+	border:1px solid black;
+	background:#8EF086;
+	display:inline-block;
+	padding:5px;
+	border-radius:5px;
+	*/
+	
+	background:rgb(178, 245, 178);
+	display: inline-block;
+	padding: 20px;
+	font-weight: bold;
+	font-style: italic;
+	font-size: 1.5em;
+	margin: 10px;
+	border-radius: 5px;
+	border: 3px solid rgb(83, 170, 111);
+}
+
+a.user-list-item {
+	display:block;
+}
+
+.certification-band {
+	border-top: 2px solid grey;
+	padding: 5px;
+}
+
+.messages {
+	background: rgb(255, 184, 0);
+	border: 2px solid rgb(134, 106, 16);
+	padding: 10px;
+	display: inline-block;
+}
+
+.start-proctoring-link {
+	color:black;
+	font-weight:bold;
+	display:block;
+	padding:5px;
+	font-size:1.5em;
+	font-style: italic;
+}
+
+.star-emblem {
+	width:30px;
+	height:30px;
+	
+}
+
+.login {
+	display: inline-block;
+	border: 1px solid grey;
+	padding: 28px;
+	border-radius: 5px;
+	margin: 40px;
+	text-align: center;
+}
+
+.passed-hunk {
+	background:rgb(178, 245, 178);
+}
+.already-met-challenge-emblem {
+	background:rgb(178, 245, 178);
+	display: inline-block;
+	padding: 20px;
+	font-weight: bold;
+	font-style: italic;
+	font-size: 1.5em;
+	margin: 10px;
+	border-radius: 5px;
+	border: 3px solid rgb(83, 170, 111);
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: inline-block;
+}
+ 
+.add-hunk-dialog {
+	width:600px;
+}
+
+.tab, .edit-hunk-button, .delete-button {
+	display:inline-block;
+	background:#eeeeee;
+	border:2px solid grey;
+	border-left:2px solid grey;
+	border-right:0px;
+	padding:5px;
+	cursor:pointer;
+}
+
+.add-button:hover {
+	background:rgb(125, 216, 11);
+}
+.add-button {
+	background: rgb(105, 184, 6);
+	border: 2px solid green;
+	color: white;
+	padding:5px;
+	display:inline-block;
+	cursor:pointer;
+}
+.delete-button {
+	background: rgb(255, 87, 87);
+	border: 2px solid red;
+	color: white;
+}
+.tab:hover, .edit-hunk-button:hover {
+	background:#ffffff;
+}
+
+.last-tab, .edit-hunk-button {
+	border-right:2px solid grey;
+}
+
+.edit-hunk-dialog .hunk-editor-tabs {
+	display:inline-block;
+}
+
+.edit-hunk-dialog .content-field {
+	width:100%;
+	height:450px;
+	display:block;
+	border:0px;
+}
+
+.edit-hunk-dialog .content-field-holder {
+	margin:10px;
+}
+
+.edit-hunk-dialog {
+	width:100%;
+}
+
+.button {
+	display:inline-block;
+	background:#eeeeee;
+	border:2px solid grey;
+	padding:5px;
+	cursor:pointer;
+}
+
+.button:hover {
+	background:#ffffff;
+}
+
+.save-button {
+	display:inline-block;
+	background: #94FF8B;
+	border: 2px solid #579C51;
+	padding:5px;
+	cursor:pointer;
+}
+
+.hunk-screen {
+	width:100%;
+}
+
+.content {
+	display:block;
+}
+
+.content-body {
+	margin:20px;
+	width:100%;
+	text-align:left;
+}
+
+.errors {
+	color:red;
+	font-weight:bold;
+	margin:10px;
+}
+
+.add-qualification-dialog .button {
+	margin:5px;
+}
+
+.add-qualification-dialog .button-band {
+	text-align:right;
+}
+.add-qualification-dialog label {
+	width:100px;
+	display:inline-block;
+	vertical-align:top;
+}
+.add-qualification-dialog div {
+	margin:5px;
+}
+
