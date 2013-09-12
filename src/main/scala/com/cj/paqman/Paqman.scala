@@ -49,7 +49,7 @@ object Paqman {
   
     def main(args: Array[String]) {
         val configFilePath = new File("config.json")
-        val port = 43180
+        val port = 43280
         val dataDir = new File("data")
         val qualifications = new Database(new File(dataDir, "quals"), classOf[Qual])
         val users = new Database(new File(dataDir, "users"), classOf[UserInfo])
