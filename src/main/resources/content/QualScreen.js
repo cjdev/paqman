@@ -23,36 +23,55 @@ function QualScreen(ref, userInfo, sessionCookie, where){
     content.text(qual.description);
     var hunksList = view.find(".qualification-hunks").find("ol");
     
+    function showHunk(hunk){
+
+		content.empty();
+		mainSection.empty();
+		HunkScreen(qual, hunk, userInfo, handleQualDeletion	, content);
+		content.show();
+		hunksList.find("li").removeClass("selected");
+		entry.addClass("selected");
+    }
+    function handleQualDeletion(){
+		content.empty();
+		refreshHunksList();
+   }
     function refreshHunksList(){
     	qual = getJson(ref);
 	    hunksList.empty();
 	    $.each(qual.hunks, function(idx, hunk){
-	       
-	       var entry = $('<li><a href="#">' + labels[hunk.kind] + ': ' + hunk.name + '</a></li>');
-	       
-	       
-	       if(userHasMetChallenge(userInfo, hunk.id)){
-	    	   entry.addClass("passed-hunk");
-	       }
-	       
-	       function handleQualDeletion(){
-				content.empty();
-				refreshHunksList();
-	       }
-	       
-	       entry.click(function(){
-				content.empty();
-				mainSection.empty();
-				HunkScreen(qual, hunk, userInfo, handleQualDeletion	, content);
-				content.show();
-				hunksList.find("li").removeClass("selected");
-				entry.addClass("selected");
-	       });
-	       hunksList.append(entry);
+	    	
+
+		       var entry = $('<li><a href="#' + hunk.name + '">' + labels[hunk.kind] + ': ' + hunk.name + '</a></li>');
+		       
+		       
+		       if(userHasMetChallenge(userInfo, hunk.id)){
+		    	   entry.addClass("passed-hunk");
+		       }
+		       
+		       
+		       
+		       entry.click(function(){
+					content.empty();
+					mainSection.empty();
+					HunkScreen(qual, hunk, userInfo, handleQualDeletion	, content);
+					content.show();
+					hunksList.find("li").removeClass("selected");
+					entry.addClass("selected");
+		       });
+		       hunksList.append(entry);
 	    });
     }
     refreshHunksList();
     view.appendTo(where);
-//    view.css("display", "block");
     view.slideDown();
+    
+    return {
+    	showHunk:function(name){
+    		var hunk = _.find(qual.hunks, function(h){return h.name==name;});
+    		if(hunk){
+    			showHunk(hunk);
+    		}
+    	}
+    };
 }

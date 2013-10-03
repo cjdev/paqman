@@ -34,16 +34,8 @@ function AddQualificationDialog(userInfo, onSuccess){
 }
 
 $(function() {
-    var sessionCookie = getCookie("SessionId");
-
-//	var name = "caskilla";
-//	var subtext = "cascading skill aquisition & assessment";
 	
-//	var name = "cascade";
-//	var subtext = "capability rollout tool";
-
-//	var name = "braintain";
-//	var subtext = "capability aquisition and maintainance tool";
+    var sessionCookie = getCookie("SessionId");
 
 	var name = "paqman";
 	var subtext = "capability aquisition and maintainance tool";
@@ -73,7 +65,7 @@ $(function() {
 			    
 				$.each(listQuals(), function(idx, qual){
 				    var entry = $('<li>' + 
-				    		           '<a class="qual-title" href="#">' + qual.name + '</a><span class="qual-description">' + qual.description + 
+				    		           '<a class="qual-title" href="/' + qual.name + '">' + qual.name + '</a><span class="qual-description">' + qual.description + 
 				    		           '<span class="qual-status-links">[<a class="more-link" href="#">more</a>]</span>' +
 				    		           '<div class="users-list" style="display:none;border-top:2px solid grey;padding-top:5px;margin-top:5px;">People:</div>' + 
 				    		      '</li>');
@@ -99,19 +91,15 @@ $(function() {
 				    
 				    contentHolder.empty();
 				    
-				    entry.find("a.qual-title").click(function(){
-				    	qualsListDiv.slideUp(function(){
-						    $(".subtext").hide();
-				    		$(".title").text(qual.name);
-				    		QualScreen(qual.ref, userInfo, sessionCookie, contentHolder);
-				    	});
-				    });
 				    qualsList.append(entry);
+				    
 				    if(userHasQualification(userInfo, qual)){
 			    	   entry.append('<img src="/gold-star.jpg" class="star-emblem"/>');
 			       }
 				});
+				
 			    $(".qualification-hunks, .content").toggle(false);
+			    qualsListDiv.slideDown();
 			}
 			
 			showQualsList();

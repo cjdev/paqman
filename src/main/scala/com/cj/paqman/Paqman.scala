@@ -299,6 +299,17 @@ object Paqman {
           }
         }
         
+        val qualUiResource = new ClasspathResourceObject("/{name}", "/content/qual.html", getClass()){
+          override def get(r:Request) = {
+            val name = r.path().valueFor("name")
+            val maybeQual = qualifications.toSeq().map{_.latest}.find(_.name == name);
+            maybeQual match {
+              case Some(qual) => super.get(r);
+              case None => null
+            }
+          }
+        }
+        
         HttpObjectsJettyHandler.launchServer(port,
             sessionFactoryResource,
             sessionResource,
@@ -309,7 +320,8 @@ object Paqman {
             hunkResource,
             qualPeopleResource,
             new ClasspathResourceObject("/", "/content/index.html", getClass()),
-            new ClasspathResourcesObject("/{resource*}", getClass(), "/content")
+            new ClasspathResourcesObject("/{resource*}", getClass(), "/content"),
+            qualUiResource
         );
         
         println("paqman is alive and listening on port " + port);

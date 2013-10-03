@@ -1,0 +1,1 @@
+improve the default styles for content (a la the stuff in the production paqman)
