@@ -1,7 +1,20 @@
 function HunkScreen(qual, hunk, userInfo, onDelete, where){
 	var view = getTemplate("/HunkScreen.html");
 	
-	function showViewer(){
+	function refreshData(){
+		var url = "/api/quals/" + qual.id + "/hunks/" + hunk.id;
+		$.ajax(url, {
+			   type:"get",
+			   async:false,
+			   success:function(data){
+				   console.log("type:" + (typeof data));
+			   }
+		   });
+	}
+	
+	function showViewer(h){
+		hunk = h
+		refreshData();
 		console.log("showing");
 		view.empty();
 		HunkViewer(qual, hunk, userInfo, showEditor, view);
@@ -10,12 +23,13 @@ function HunkScreen(qual, hunk, userInfo, onDelete, where){
 	}
 	
 	function showEditor(){
+		refreshData();
 		view.empty();
 		HunkEditor(qual, hunk, view, showViewer, onDelete);
 		console.log("yay!");
 	}
 
-	showViewer();
+	showViewer(hunk);
 	
 	view.appendTo(where);
 	view.show();

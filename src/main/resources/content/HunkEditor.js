@@ -36,9 +36,8 @@ function HunkEditor(qual, hunk, where, onSave, onDelete){
 	   $.ajax(url, {
 		   type:"PUT",
 		   data:JSON.stringify(hunk),
-		   success:function(){
-			   console.log("ok");
-			   onSave();
+		   success:function(d){
+			   onSave(d);
 		   }
 	   });
    });
