@@ -1,6 +1,7 @@
 package com.cj.paqman
 
 import java.io.ByteArrayOutputStream
+import java.net.URLDecoder
 import java.util.UUID
 import scala.reflect.BeanProperty
 import org.httpobjects.DSL._
@@ -301,7 +302,7 @@ object Paqman {
         
         val qualUiResource = new ClasspathResourceObject("/{name}", "/content/qual.html", getClass()){
           override def get(r:Request) = {
-            val name = r.path().valueFor("name")
+            val name = URLDecoder.decode(r.path().valueFor("name"))
             val maybeQual = qualifications.toSeq().map{_.latest}.find(_.name == name);
             maybeQual match {
               case Some(qual) => super.get(r);

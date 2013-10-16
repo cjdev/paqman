@@ -17,7 +17,7 @@ $(function() {
 			var userDetailsArea = $(".user-details-area");
             $(".userid").text(userInfo.email);
             
-            var name = window.location.pathname.substring(1);
+            var name = decodeURIComponent(window.location.pathname.substring(1));
             var qual = _.find(listQuals(), function(a){return a.name == name});
             console.log("qual: ", qual);
             
