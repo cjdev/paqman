@@ -1,4 +1,12 @@
 
+blockquote {
+	border: none; 
+	margin:10px; 
+	background:#eeeeee;
+	padding: 22px;
+	font-style: italic;
+}
+
 .title {
     font-family:monospace;
     font-size:48pt;
@@ -128,6 +136,10 @@ body {
    margin-left:220px;
    text-align:center;
    display:block;
+   
+   font-family:serif;
+font-size: +1.25em;
+line-height: 1.5;
 }
 
 .content-title {
@@ -242,6 +254,7 @@ a.user-list-item {
 	border-right:0px;
 	padding:5px;
 	cursor:pointer;
+    font-family:monospace;
 }
 
 .add-button:hover {
