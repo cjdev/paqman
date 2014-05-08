@@ -356,3 +356,9 @@ a.user-list-item {
 	margin:5px;
 }
 
+.hunk-editing-dialog button {
+    display:block;
+}
+.hunk-editing-dialog input[type="radio"] {
+    display:block;
+}

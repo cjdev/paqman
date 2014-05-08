@@ -1,4 +1,4 @@
-define(["util"], function(util){
+define(["util", 'HunkEditingDialog'], function(util, HunkEditingDialog){
     return function(qual, hunk, where, onSave, onDelete){
         var dialogView = util.getTemplate("/HunkEditor.html"),
         nameTextField = dialogView.find(".name-field"),
@@ -32,14 +32,20 @@ define(["util"], function(util){
     
             hunk.name = nameTextField.val();
             hunk.description = contentField.val();
-    
-            $.ajax(url, {
-                type:"PUT",
-                data:JSON.stringify(hunk),
-                success:function(d){
-                    onSave(d);
-                }
+            HunkEditingDialog(function(isSignificant){
+                console.log("isSignificant:" + isSignificant);
+                
+                $.ajax(url, {
+                    type:"PUT",
+                    data:JSON.stringify(hunk),
+                    success:function(d){
+                        onSave(d);
+                    }
+                });
+                
             });
+            
+            
         });
     
         dialogView.show();
