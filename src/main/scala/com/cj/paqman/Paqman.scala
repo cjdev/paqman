@@ -26,7 +26,12 @@ case class Session(val email:String)
 case class QualDto(val id:String , val name:String, val description:String, val hunks:Seq[Hunk], val administrator:String, val proctors:Seq[String]){
   def this(q:Qual, proctors:Seq[String]) = this(id = q.id, name=q.name, description = q.description, hunks = q.hunks, administrator = q.administrator, proctors=proctors)
 }
-case class PersonStatus(email:String, isCurrent:Boolean, wasCurrent:Boolean)
+case class HunkInfo(id:String, name:String)
+case class PersonStatus(email:String, isAdministrator:Boolean,
+            isCurrent:Boolean, wasCurrent:Boolean, 
+            hasPassedSomeChallenges:Boolean, 
+            passedChallenges:Seq[HunkInfo],
+            challengesYetToDo:Seq[HunkInfo])
   
 object Paqman {
   
@@ -228,18 +233,37 @@ object Paqman {
               case None =>BAD_REQUEST
               case Some(qual)=>{
                 val result = datas.users.toSeq.map(_.latest).flatMap{user=>
+                  val maybeUserQualInfo = user.qualifications.find(_.id == qualId)
+                  val hasPassedSomeChallenges = maybeUserQualInfo match {
+                    case None=>false
+                    case Some(userQualInfo)=>userQualInfo.passedChallenges.size>0
+                  }
+                  
                   val versionsPassed = qual.history.filter(user.hasPassed(_))
                   
                   val passedVersions = qual.history.filter(user.hasPassed(_))
                   
                   val wasCurrent = !passedVersions.isEmpty
                   val isCurrent = user.hasPassed(qual.latest)
-                  println(s"user ${user} isCurrent=$isCurrent, wasCurrent=$wasCurrent passed $passedVersions")
+                  println(s"user ${user} isCurrent=$isCurrent, wasCurrent=$wasCurrent hasPassedSomeChallenges=$hasPassedSomeChallenges passed $passedVersions")
                   
-                  if(versionsPassed.isEmpty){
-                    None
+                  val challenges = qual.latest.hunks.filter(_.kind == "challenge")
+                  val passedChallenges = challenges.filter{hunk=>
+                    maybeUserQualInfo match {
+                      case None=>false
+                      case Some(userQualInfo)=> userQualInfo.passedChallenges.contains(hunk.id)
+                    }
+                  }
+                  
+                  val isAdministrator = qual.latest.administrator == user.id
+                  
+                  if(hasPassedSomeChallenges || isAdministrator){
+                    Some(PersonStatus(email=user.id, isAdministrator=isAdministrator, isCurrent=isCurrent, wasCurrent=wasCurrent, 
+                        hasPassedSomeChallenges=hasPassedSomeChallenges,
+                        passedChallenges=passedChallenges.map(_.toHunkInfo),
+                        challengesYetToDo=challenges.filterNot(passedChallenges.contains(_)).map(_.toHunkInfo)))
                   }else{
-                    Some(PersonStatus(email=user.id, isCurrent=isCurrent, wasCurrent=wasCurrent))
+                      None
                   }
                 }
                 OK(Json(generate(result)))

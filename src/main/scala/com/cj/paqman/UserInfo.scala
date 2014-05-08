@@ -18,6 +18,10 @@ case class QualificationFoo(val qualId:String, val challengesMissing:Seq[String]
   def hasPassed = challengesMissing.isEmpty
 }
 
+// has passed before
+// has met one or more challenges
+// nothing
+
 case class UserInfo (val id:String, val qualifications:Seq[QualificationInfo]){
   def hasPassed(q:Qual) = qualifications.find(q.hasPassed(_)).isDefined
 }

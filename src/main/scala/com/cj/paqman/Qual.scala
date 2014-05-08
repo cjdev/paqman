@@ -6,7 +6,8 @@ case class Qual(val id:String = UUID.randomUUID().toString(), val name:String, v
   def hasPassed(userHistory:QualificationInfo):Boolean = {
     if(userHistory.id == id){
       val challenges = hunks.filter(_.kind == "challenge").map(_.id).toSet
-      challenges.forall(userHistory.passedChallenges.contains)
+      val passedChallenges = challenges.filter(userHistory.passedChallenges.contains)
+      challenges.size>0 && (challenges.size==passedChallenges.size)
     }else{
       false
     }
@@ -22,4 +23,5 @@ case class Hunk(
     val whenAdded:Long
 ){
   def updateFrom(hunk:Hunk, now:Long) = copy(id=UUID.randomUUID().toString(), name=hunk.name, url = hunk.url, description = hunk.description, whenAdded = now)
+  def toHunkInfo=HunkInfo(id=id, name=name)
 }

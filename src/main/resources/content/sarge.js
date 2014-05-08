@@ -66,7 +66,7 @@ $(function() {
 				$.each(listQuals(), function(idx, qual){
 				    var entry = $('<li>' + 
 				    		           '<a class="qual-title" href="/' + qual.name + '">' + qual.name + '</a><span class="qual-description">' + qual.description + 
-				    		           '<span class="qual-status-links">[<a class="more-link" href="#">more</a>]</span>' +
+				    		           '<span class="qual-status-links">[<a class="more-link" href="">certifications</a>]</span>' +
 				    		           '<div class="users-list" style="display:none;border-top:2px solid grey;padding-top:5px;margin-top:5px;">People:</div>' + 
 				    		      '</li>');
 				    
@@ -80,12 +80,14 @@ $(function() {
 					    	$.each(people, function(idx, person){
 					    		var status;
 					    		
-					    		if(person.isCurrent){
+					    		if(person.isAdministrator){
+					    		    status = "administrator";
+					    		} else if(person.isCurrent){
 					    		    status = "current";
 					    		}else if(person.wasCurrent){
 				    		        status = "lapsed";
 				    		    }else{
-				    		        status = "uncertified";
+				    		        status = "partial (" + person.passedChallenges.length + "/" + (person.passedChallenges.length + person.challengesYetToDo.length) + ")";
 				    		    }
 					    		list.append('<div class="user-status-list-entry">' + person.email + ' | ' + status + '</div>');
 					    	});
@@ -94,7 +96,7 @@ $(function() {
 					    	});
 				    	});
 				    	
-				    	
+				    	return false;
 				    });
 				    
 				    contentHolder.empty();
