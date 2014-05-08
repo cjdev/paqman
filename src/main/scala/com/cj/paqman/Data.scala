@@ -2,7 +2,6 @@
 package com.cj.paqman
 
 import java.io.File
-import com.cj.paqman.Session
 
 class Data(dataDir:File) {
     val qualifications = new Database(new File(dataDir, "quals"), classOf[Qual])

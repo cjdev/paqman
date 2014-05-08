@@ -16,6 +16,7 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import java.io.File
 import org.apache.commons.io.FileUtils
+import com.cj.paqman.http._
 
 case class AuthRequest(val email:String, val password:String)
 case class UserQualStatus(val id:String, val isQualified:Boolean, val challengesMet:Set[String])
@@ -66,39 +67,8 @@ object Paqman {
                 def emailExists(email:String) = true
           }
         }
-         
-         def getUserWithCreateIfNeeded(emailAddress:String) = {
-          datas.users.get(emailAddress) match{
-            case None => if(authMechanism.emailExists(emailAddress)){
-              val user =  UserInfo(id=emailAddress, qualifications=Seq())
-              datas.users.put(emailAddress, user)
-              Some(user)
-            }else{
-              None
-            }
-            case Some(user)=> Some(user)
-          }
-        }
-        val sessionFactoryResource = new HttpObject("/api/sessions"){
-            override def post(r:Request)= {
-              val request = readJson[AuthRequest](r.representation())
-              val result = authMechanism.authenticateEmail(request.email, request.password)
-              result match {
-                case Some(userInfo) => 
-                  getUserWithCreateIfNeeded(request.email) match {
-                    case None => UNAUTHORIZED
-                    case Some(user)=> {
-                      val sessionId = UUID.randomUUID().toString()
-                      datas.sessions.put(sessionId, Session(request.email))
-                      OK(Json("""{
-                                     "token":"""" + sessionId + """"
-                                 }"""))
-                    }
-                  }
-                case None => UNAUTHORIZED()
-              }
-            }
-        }
+        val service = new Service(datas=datas, authMechanism=authMechanism)
+        val sessionFactoryResource = new SessionFactoryResource(datas=datas, authMechanism=authMechanism, service=service)
         
         
         val sessionResource = new HttpObject("/api/sessions/{id}"){
@@ -108,24 +78,24 @@ object Paqman {
                 case None => NOT_FOUND()
                 case Some(session) => {
                   datas.users.get(session.email) match {
-	                    case Some(user) => {
-	                      val myQuals = user.qualifications.map{q=>
-	                      val qual = datas.qualifications.get(q.id).get
-	                        if(user.id == qual.administrator){
-	                          UserQualStatus(
-	                            id=q.id,
-	                            isQualified = true,
-	                            challengesMet = qual.hunks.filter(_.kind == "challenge").map(_.id).toSet)
-	                        }else{
-	                          UserQualStatus(
+                        case Some(user) => {
+                          val myQuals = user.qualifications.map{q=>
+                          val qual = datas.qualifications.get(q.id).get
+                            if(user.id == qual.administrator){
+                              UserQualStatus(
+                                id=q.id,
+                                isQualified = true,
+                                challengesMet = qual.hunks.filter(_.kind == "challenge").map(_.id).toSet)
+                            }else{
+                              UserQualStatus(
                                 id=q.id, 
                                 isQualified=q.hasPassed(datas.qualifications), 
                                 challengesMet=q.passedChallenges)
-	                        }
-	                      }
-	                      OK(Json(generate(SessionInfo(email = session.email, qualifications = myQuals))))
-	                    }
-	                    case None => INTERNAL_SERVER_ERROR
+                            }
+                          }
+                          OK(Json(generate(SessionInfo(email = session.email, qualifications = myQuals))))
+                        }
+                        case None => INTERNAL_SERVER_ERROR
                     }
                   }
               }
@@ -287,7 +257,7 @@ object Paqman {
             datas.qualifications.get(qualId) match {
               case None =>BAD_REQUEST()
               case Some(qual)=>{
-                val user = getUserWithCreateIfNeeded(emailAddress).get
+                val user = service.getUserWithCreateIfNeeded(emailAddress).get
                 def isThis(q:QualificationInfo) = q.id == qualId
                 
                 val qualInfo:QualificationInfo = user.qualifications.find(isThis).getOrElse(new QualificationInfo(id=qualId))
