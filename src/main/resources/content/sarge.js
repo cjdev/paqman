@@ -59,7 +59,7 @@ $(function() {
 				var qualsListDiv, qualsList, contentHolder;
 
 				contentHolder = $(".content-holder");
-				qualsListDiv = $(".quals-list-holder"), 
+				qualsListDiv = $(".quals-list-holder");
 				qualsList = $(".quals-list");
 				qualsList.empty();
 			    
