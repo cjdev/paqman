@@ -6,18 +6,17 @@ case class Qual(val id:String = UUID.randomUUID().toString(), val name:String, v
   def hasPassed(userHistory:QualificationInfo):Boolean = {
     if(userHistory.id == id){
 //      val challenges = 
-      val allChallenges = hunks.filter(_.kind == "challenge"); 
-      val meaningfulChallenges = allChallenges.filter(_.replacementInfo match {
-        case None => true
-        case Some(replacementInfo) => replacementInfo.isSignificantEdit
-      });
-      
-      val idsOfMeaningfulChallenges = meaningfulChallenges.map(_.id).toSet
-      println("Meaningful challenges: " + meaningfulChallenges.map(_.name).mkString(","))
-      val passedChallengeIds = idsOfMeaningfulChallenges.filter(userHistory.passedChallenges.contains)
-      println("passed size = " + passedChallengeIds.size)
-      println("passed size = " + idsOfMeaningfulChallenges.size)
-      idsOfMeaningfulChallenges.size==passedChallengeIds.size
+      val allChallenges = hunks.filter(_.kind == "challenge");
+      if(allChallenges.size==0){false}else{
+          val meaningfulChallenges = allChallenges.filter(_.replacementInfo match {
+          case None => true
+          case Some(replacementInfo) => replacementInfo.isSignificantEdit
+          });
+          
+          val idsOfMeaningfulChallenges = meaningfulChallenges.map(_.id).toSet
+          val passedChallengeIds = idsOfMeaningfulChallenges.filter(userHistory.passedChallenges.contains)
+          idsOfMeaningfulChallenges.size==passedChallengeIds.size
+      }
     }else{
       false
     }
@@ -29,7 +28,6 @@ case class Qual(val id:String = UUID.randomUUID().toString(), val name:String, v
         case None => false
         case Some(replacementInfo)=>replacementInfo.replacesId == hunkId
       }
-      println(h.replacementInfo + " vs " + hunkId + " vs " + h.id + " vs " + h.name)
       val isHunk = h.id == hunkId
       isHunk || isReplacement
     }

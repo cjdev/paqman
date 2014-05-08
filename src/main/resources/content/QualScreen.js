@@ -41,17 +41,10 @@ define(["util", "AddHunkDialog", "HunkScreen"], function(util, AddHunkDialog, Hu
             qual = util.getJson(ref);
             hunksList.empty();
             $.each(qual.hunks, function(idx, hunk){
-    
-    
                 var entry = $('<li><a href="#' + hunk.name + '">' + util.labels[hunk.kind] + ': ' + hunk.name + '</a></li>');
-    
-    
                 if(util.userHasMetChallenge(userInfo, hunk.id)){
                     entry.addClass("passed-hunk");
                 }
-    
-    
-    
                 entry.click(function(){
                     content.empty();
                     mainSection.empty();

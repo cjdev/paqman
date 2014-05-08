@@ -19,6 +19,61 @@ class Service(val datas:Data, val authMechanism:AuthMechanism) {
               qual = datas.qualifications.getHistory(qualId).get, 
               user=user)
     }
+    
+    
+    
+      
+      case class HunkHistory(versions:Seq[Hunk]){
+        
+        def lastSignificantEdit = {
+           val lastSignificantEdit = versions.find{hunk=>
+              hunk.replacementInfo match {
+                case None => true
+                case Some(r) => r.isSignificantEdit
+              }
+          }
+          lastSignificantEdit.get
+        }
+        
+        def isPassed(i:QualificationInfo) = {
+          
+          val acceptableVersions = versions.foldLeft(List[Hunk]()){(accum, v)=>
+            if(accum.isEmpty) {
+              List(v)
+            }else{
+                val isSig = accum.last.replacementInfo match {
+                case Some(r)=> r.isSignificantEdit
+                case None => false
+                }
+                if(isSig) accum else accum :+ v
+            }
+          }
+          
+          val isPassed = acceptableVersions.map(_.id).find(i.passedChallenges.contains(_)).isDefined
+          isPassed
+        }
+      }
+      
+    
+    def hunkHistories(qual:Record[Qual]) = {
+      
+      val currentHunks = qual.latest.hunks.map{latestH=>
+          val hunkHistory = qual.history.reverse.tail.foldLeft(List[Hunk](latestH)){(hunksSoFar, q) =>
+            
+            hunksSoFar.last.replacementInfo match {
+              case None=> hunksSoFar
+              case Some(r) => {
+                val h = q.hunks.find(_.id == r.replacesId).get
+                hunksSoFar :+ h
+              }
+            }
+          }
+          
+          HunkHistory(hunkHistory)
+      }
+      currentHunks
+    }
+    
     def userStatus(qual:Record[Qual], user:UserInfo):PersonStatus = {
       val qualId = qual.latest.id
       val maybeUserQualInfo = user.qualifications.find(_.id == qualId)
@@ -32,34 +87,19 @@ class Service(val datas:Data, val authMechanism:AuthMechanism) {
       val passedVersions = qual.history.filter(user.hasPassed(_))
       
       val wasCurrent = !passedVersions.isEmpty
-      val isCurrent = user.hasPassed(qual.latest)
       
       
-      println(s"user ${user} isCurrent=$isCurrent, wasCurrent=$wasCurrent hasPassedSomeChallenges=$hasPassedSomeChallenges passed $passedVersions")
+      val currentHunks = hunkHistories(qual)
       
-      
-      val latestSignificantVersions = qual.latest.hunks.map{latestH=>
-          val hunkHistory = qual.history.tail.foldLeft(List[Hunk](latestH)){(hunksSoFar, q) =>
-            hunksSoFar.last.replacementInfo match {
-              case None=> hunksSoFar
-              case Some(r) => {
-                hunksSoFar ++ q.hunkOrReplacmentForHunk(r.replacesId)
-              }
-            }
-          }
-          
-          val lastSignificantEdit = hunkHistory.find{hunk=>
-              hunk.replacementInfo match {
-                case None => true
-                case Some(r) => r.isSignificantEdit
-              }
-          }
-          lastSignificantEdit.get
+      val isCurrent = maybeUserQualInfo match {
+        case Some(qualInfo)=>{
+          currentHunks.forall{i=> i.isPassed(qualInfo)}
+        }
+        case None=>false
       }
+      val latestSignificantVersions = currentHunks.map(_.lastSignificantEdit)
       
       val challenges = latestSignificantVersions.filter(_.kind == "challenge")
-      
-      println(s"sigs: $challenges")
       
       val foo = maybeUserQualInfo match {
           case None=>false
