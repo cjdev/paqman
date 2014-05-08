@@ -56,6 +56,26 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.cj.jshintmojo</groupId>
+                <artifactId>jshint-maven-plugin</artifactId>
+                <version>1.3.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>lint</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>src/main/resources/content/jquery-ui-1.10.3</exclude>
+                        <exclude>src/main/resources/content/jquery-1.9.1.min.js</exclude>
+                        <exclude>src/main/resources/content/underscore-min.js</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

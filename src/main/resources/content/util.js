@@ -19,27 +19,26 @@ function getCookie(c_name) {
 }
 
 function slideLeftHide(jquery) {
-	jquery.animate({width: 'hide'});
+    jquery.animate({width: 'hide'});
 }
 
 function setCookie(c_name, value, exdays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + exdays);
-    var c_value = escape(value)
-            + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+    var c_value = escape(value) + ((exdays === null) ? "" : "; expires=" + exdate.toUTCString());
     document.cookie = c_name + "=" + c_value;
 }
 
 var templatesCache = {};
 
 function getTemplate(ref){
-	var template = templatesCache[ref];
-	
-	if(!template){
-	  template = getText(ref);
-	  templatesCache[ref] = template;
-	}
-	
+    var template = templatesCache[ref];
+
+    if(!template){
+        template = getText(ref);
+        templatesCache[ref] = template;
+    }
+
     return $($.parseHTML(template));
 }
 
@@ -53,7 +52,7 @@ function getText(ref){
         success : function(data) {
             result = data;
         }
-    })
+    });
     return result;
 }
 
@@ -67,7 +66,7 @@ function getJson(ref){
         success : function(data) {
             result = data;
         }
-    })
+    });
     return result;
 }
 function listQuals(){
@@ -93,23 +92,23 @@ var labels = {
 };
 
 function userHasMetChallenge(userInfo, theChallengeId){
-	   var result = false;
-	   $.each(userInfo.qualifications, function(idx, q){
-		   $.each(q.challengesMet, function(idx, challengeId){
-			   if(theChallengeId == challengeId){
-				   result = true;
-			   }
-		   });
-	   });
-	   return result;
+    var result = false;
+    $.each(userInfo.qualifications, function(idx, q){
+        $.each(q.challengesMet, function(idx, challengeId){
+            if(theChallengeId == challengeId){
+                result = true;
+            }
+        });
+    });
+    return result;
 }
 function userHasQualification(userInfo, qual){
-	   var result = false;
-	   var quals = userInfo.qualifications || [];
-	   $.each(quals, function(idx, q){
-		   if(q.id === qual.id && q.isQualified){
-			   result = true;
-		   }
-	   });
-	   return result;
+    var result = false;
+    var quals = userInfo.qualifications || [];
+    $.each(quals, function(idx, q){
+        if(q.id === qual.id && q.isQualified){
+            result = true;
+        }
+    });
+    return result;
 }
