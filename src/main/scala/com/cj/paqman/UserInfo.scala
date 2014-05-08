@@ -12,6 +12,12 @@ case class QualificationInfo(id:String, passedChallenges:Set[String] = Set()){
     
   }
 }
+
+
+case class QualificationFoo(val qualId:String, val challengesMissing:Seq[String]){
+  def hasPassed = challengesMissing.isEmpty
+}
+
 case class UserInfo (val id:String, val qualifications:Seq[QualificationInfo]){
   def hasPassed(q:Qual) = qualifications.find(q.hasPassed(_)).isDefined
 }
