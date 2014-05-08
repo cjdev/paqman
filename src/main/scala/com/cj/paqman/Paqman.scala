@@ -51,7 +51,7 @@ object Paqman {
             new ChallengePeopleResource(data=datas, service=service),
             new HunksResource(datas=datas),
             new HunkResource(datas=datas),
-            new QualPeopleResource(data=datas),
+            new QualPeopleResource(data=datas, service=service),
             new ClasspathResourceObject("/", "/content/index.html", getClass()),
             new ClasspathResourcesObject("/{resource*}", getClass(), "/content"),
             new QualUIResource(data=datas)

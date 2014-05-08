@@ -71,15 +71,15 @@ define(["jquery", "util"], function($, util){
                             var list = entry.find(".users-list");
                             $.each(people, function(idx, person){
                                 var status;
-    
+                                var statistics = person.passedChallenges.length + "/" + (person.passedChallenges.length + person.challengesYetToDo.length);
                                 if(person.isAdministrator){
                                     status = "administrator";
                                 } else if(person.isCurrent){
                                     status = "current";
                                 }else if(person.wasCurrent){
-                                    status = "lapsed";
+                                    status = "lapsed (" + statistics + ")";
                                 }else{
-                                    status = "partial (" + person.passedChallenges.length + "/" + (person.passedChallenges.length + person.challengesYetToDo.length) + ")";
+                                    status = "partial (" + statistics + ")";
                                 }
                                 list.append('<div class="user-status-list-entry">' + person.email + ' | ' + status + '</div>');
                             });
@@ -123,7 +123,7 @@ define(["jquery", "util"], function($, util){
         }
     
         $(".logout").click(function(){
-            setCookie("SessionId", "");
+            util.setCookie("SessionId", "");
             showUI(false);
         });
     
@@ -148,7 +148,7 @@ define(["jquery", "util"], function($, util){
                 data : JSON.stringify(request),
                 success:function(msg) {
                     var token = msg.token;
-                    setCookie("SessionId", token);                
+                    util.setCookie("SessionId", token);                
     
                     passwordField.val("");
                     showUI(true, util.getSessionInfo(token), token);

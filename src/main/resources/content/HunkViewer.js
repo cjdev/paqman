@@ -10,7 +10,7 @@ define(["util"], function(util){
     
         view.find(".user-name").text(userInfo.email);
     
-        var canProctor = userIsQualAdministrator || userHasQualification(userInfo, qual);
+        var canProctor = userIsQualAdministrator || util.userHasQualification(userInfo, qual);
         var contentHandlers = {
                 "video":function(hunk){
                     console.log("Yo: " + hunk.url);

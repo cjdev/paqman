@@ -34,6 +34,10 @@ define(["util", 'HunkEditingDialog'], function(util, HunkEditingDialog){
             hunk.description = contentField.val();
             HunkEditingDialog(function(isSignificant){
                 console.log("isSignificant:" + isSignificant);
+                hunk.replacementInfo = {
+                        isSignificantEdit:isSignificant,
+                        replacesId:hunk.id
+                };
                 
                 $.ajax(url, {
                     type:"PUT",
