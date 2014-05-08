@@ -78,7 +78,15 @@ $(function() {
 				    	$.get("/api/quals/" + qual.id + "/people", function(people){
 				    		var list = entry.find(".users-list");
 					    	$.each(people, function(idx, person){
-					    		var status = person.isCurrent ? "current" : "lapsed";
+					    		var status;
+					    		
+					    		if(person.isCurrent){
+					    		    status = "current";
+					    		}else if(person.wasCurrent){
+				    		        status = "lapsed";
+				    		    }else{
+				    		        status = "uncertified";
+				    		    }
 					    		list.append('<div class="user-status-list-entry">' + person.email + ' | ' + status + '</div>');
 					    	});
 					    	list.slideDown(function(){

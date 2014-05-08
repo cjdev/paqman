@@ -26,7 +26,7 @@ object Paqman {
   case class QualDto(val id:String , val name:String, val description:String, val hunks:Seq[Hunk], val administrator:String, val proctors:Seq[String]){
     def this(q:Qual, proctors:Seq[String]) = this(id = q.id, name=q.name, description = q.description, hunks = q.hunks, administrator = q.administrator, proctors=proctors)
   }
-  case class PersonStatus(email:String, isCurrent:Boolean)
+  case class PersonStatus(email:String, isCurrent:Boolean, wasCurrent:Boolean)
   
   private def replace[T](current:T, replacement:T, seq:Seq[T]) = {
     val idx = seq.indexOf(current)
@@ -262,12 +262,15 @@ object Paqman {
               case Some(qual)=>{
                 val result = users.toSeq.map(_.latest).flatMap{user=>
                   val versionsPassed = qual.history.filter(user.hasPassed(_))
+                  
+                  val wasCurrent = qual.history.find(user.hasPassed(_)).isDefined
+                  
                   val isCurrent = user.hasPassed(qual.latest)
                   
                   if(versionsPassed.isEmpty){
                     None
                   }else{
-                    Some(PersonStatus(email=user.id, isCurrent=isCurrent))
+                    Some(PersonStatus(email=user.id, isCurrent=isCurrent, wasCurrent=wasCurrent))
                   }
                 }
                 OK(Json(generate(result)))
