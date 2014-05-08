@@ -1,6 +1,7 @@
-$(function() {
+define(["jquery", "util", "underscore", "QualScreen"], 
+      function($, util,   _,             QualScreen) {
 
-    var sessionCookie = getCookie("SessionId");
+    var sessionCookie = util.getCookie("SessionId");
 
     var name = "paqman";
     var subtext = "capability aquisition and maintainance tool";
@@ -18,7 +19,7 @@ $(function() {
             $(".userid").text(userInfo.email);
 
             var name = decodeURIComponent(window.location.pathname.substring(1));
-            var qual = _.find(listQuals(), function(a){return a.name == name;});
+            var qual = _.find(util.listQuals(), function(a){return a.name == name;});
             console.log("qual: ", qual);
 
             var contentHolder = $(".content-holder");
@@ -39,7 +40,7 @@ $(function() {
         }
     }
 
-    var userInfo = getSessionInfo(sessionCookie);
+    var userInfo = util.getSessionInfo(sessionCookie);
     if (sessionCookie && userInfo) {
         showUI(true, userInfo, sessionCookie);
     } else {
@@ -75,7 +76,7 @@ $(function() {
                 setCookie("SessionId", token);                
 
                 passwordField.val("");
-                showUI(true, getSessionInfo(token), token);
+                showUI(true, util.getSessionInfo(token), token);
             },
             error:function(jqXHR, textStatus, errorThrown){
                 loginErrorsText.append("Invalid Credentials");

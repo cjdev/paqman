@@ -72,7 +72,8 @@
                     <excludes>
                         <exclude>src/main/resources/content/jquery-ui-1.10.3</exclude>
                         <exclude>src/main/resources/content/jquery-1.9.1.min.js</exclude>
-                        <exclude>src/main/resources/content/underscore-min.js</exclude>
+			<exclude>src/main/resources/content/underscore-min.js</exclude>
+			<exclude>src/main/resources/content/third-party</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -102,24 +103,24 @@
             <version>8.1.11.v20130520</version>
         </dependency>
         <dependency>
-	      <groupId>com.fasterxml.jackson.core</groupId>
-	      <artifactId>jackson-databind</artifactId>
-	      <version>${jackson-version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-version}</version>
         </dependency>
         <dependency>
-	      <groupId>com.fasterxml.jackson.core</groupId>
-	      <artifactId>jackson-annotations</artifactId>
-	      <version>${jackson-version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-version}</version>
         </dependency>
         <dependency>
-	      <groupId>com.fasterxml.jackson.module</groupId>
-	      <artifactId>jackson-module-scala_2.10</artifactId>
-	      <version>${jackson-version}</version>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-scala_2.10</artifactId>
+            <version>${jackson-version}</version>
         </dependency>
         <dependency>
-          <groupId>com.fasterxml.jackson.core</groupId>
-		  <artifactId>jackson-core</artifactId>
-		  <version>${jackson-version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -142,6 +143,5 @@
             <artifactId>jldap</artifactId>
             <version>4.3</version>
         </dependency>
-
     </dependencies>
 </project>
