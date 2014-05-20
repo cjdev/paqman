@@ -1,8 +1,8 @@
-define(["jquery", "util"], function($, util){
+define(["jquery", "jqueryui", "util"], function($,jqueryui, util){
     function AddQualificationDialog(userInfo, onSuccess){
         var view, nameField, createButton, descriptionField;
     
-        view = getTemplate("/AddQualificationDialog.html").appendTo($("body"));
+        view = util.getTemplate("/AddQualificationDialog.html").appendTo($("body"));
         nameField = view.find(".name-field");
         descriptionField = view.find(".description-field");
         createButton = view.find(".button");
