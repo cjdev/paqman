@@ -3,16 +3,7 @@ package com.cj.paqman.http
 import org.httpobjects._
 import org.httpobjects.DSL._
 import com.cj.paqman.Data
-import com.cj.paqman.Session
-import java.util.UUID
-import com.cj.paqman.Paqman
-import com.cj.paqman.AuthRequest
-import com.cj.paqman.AuthMechanism
-import com.cj.paqman.Service
-import com.cj.paqman.PersonStatus
 import com.cj.paqman.Jackson
-import com.cj.paqman.QualSummary
-import com.cj.paqman.Qual
 import com.cj.paqman.Qual
 import com.cj.paqman.Hunk
 
@@ -34,9 +25,8 @@ class HunkResource (datas:Data) extends HttpObject("/api/quals/{id}/hunks/{hunkI
   }
   
   override def get(r:Request) = findHunk(r) match {
-    case Some(qualHunk) => {
+    case Some(qualHunk) =>
       OK(Json(Jackson.generate(qualHunk.hunk)))
-    }
     case None=> NOT_FOUND
   }
   
@@ -46,18 +36,17 @@ class HunkResource (datas:Data) extends HttpObject("/api/quals/{id}/hunks/{hunkI
     if(sameByReference(candidate, from)) to else candidate
   }
   override def delete(r:Request) = findHunk(r) match {
-    case Some(qualHunk) => {
+    case Some(qualHunk) =>
       val qual = qualHunk.qual
       val updatedQual = qual.copy(
                               hunks = qual.hunks.filterNot(qualHunk.hunk.id == _.id))
                               
-      datas.qualifications.put(qual.id, updatedQual);
+      datas.qualifications.put(qual.id, updatedQual)
       OK(Text(""))
-    }
     case None=> NOT_FOUND
   }
   override def put(r:Request) = findHunk(r) match {
-    case Some(qualHunk) => {
+    case Some(qualHunk) =>
       val existingHunk = qualHunk.hunk
       val qual = qualHunk.qual
       val updatedHunk = existingHunk.updateFrom(Jackson.readJson[Hunk](r.representation()), now = System.currentTimeMillis())
@@ -66,9 +55,8 @@ class HunkResource (datas:Data) extends HttpObject("/api/quals/{id}/hunks/{hunkI
                                               from=existingHunk, 
                                               to=updatedHunk)))
                               
-      datas.qualifications.put(qual.id, updatedQual);
+      datas.qualifications.put(qual.id, updatedQual)
       OK(Json(Jackson.generate(updatedHunk)))
-    }
     case None=> NOT_FOUND
   }
 }

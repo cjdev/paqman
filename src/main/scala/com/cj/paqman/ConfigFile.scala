@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
-case class ConfigFile(val ldapUrl:String, val ldapUser:String, val ldapPassword:String)
+case class ConfigFile(ldapUrl:String, ldapUser:String, ldapPassword:String)
 
 object ConfigFile {
   val jackson = new ObjectMapper() with ScalaObjectMapper

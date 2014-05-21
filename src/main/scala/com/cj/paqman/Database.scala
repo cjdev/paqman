@@ -17,8 +17,8 @@ trait Record[T] {
 }
 
 class Database[T <: AnyRef](val d:File, val t:Class[T]){
-  val valuesDir = new File(d, "versions");
-  val historiesDir = new File(d, "histories");
+  val valuesDir = new File(d, "versions")
+  val historiesDir = new File(d, "histories")
   valuesDir.mkdirs()
   historiesDir.mkdirs()
   val mapper = new ObjectMapper() with ScalaObjectMapper
@@ -28,15 +28,15 @@ class Database[T <: AnyRef](val d:File, val t:Class[T]){
   private def valuePathForKey(key:String) = new File(valuesDir, key)
   
   private def generate(o:AnyRef) = {
-    mapper.writeValueAsString(o);
+    mapper.writeValueAsString(o)
   }
   
   def put(key:String, value:T) = this.synchronized {
-    val newVersionId = UUID.randomUUID().toString()
+    val newVersionId = UUID.randomUUID().toString
     
     val file = historyPathForKey(key)
     val existingHistory = if(file.exists()){
-      mapper.readValue(file, classOf[RecordHistory]);
+      mapper.readValue(file, classOf[RecordHistory])
     }else{
       RecordHistory(versions=Seq())
     }
@@ -57,8 +57,8 @@ class Database[T <: AnyRef](val d:File, val t:Class[T]){
   
   private class RecordImpl(val h:RecordHistory) extends Record[T] {
     private def readValue(id:String) = mapper.readValue(valuePathForKey(id), t)
-    def latest():T  = readValue(h.latest)
-    def history():Seq[T] = h.versions.map(readValue(_))
+    def latest:T  = readValue(h.latest)
+    def history():Seq[T] = h.versions.map(readValue)
   }
   
   def get(key:String):Option[T] = getHistory(key) match {

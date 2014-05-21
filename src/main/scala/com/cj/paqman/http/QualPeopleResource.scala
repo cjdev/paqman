@@ -3,13 +3,7 @@ package com.cj.paqman.http
 import org.httpobjects._
 import org.httpobjects.DSL._
 import com.cj.paqman.Data
-import com.cj.paqman.Session
-import java.util.UUID
-import com.cj.paqman.Paqman
-import com.cj.paqman.AuthRequest
-import com.cj.paqman.AuthMechanism
 import com.cj.paqman.Service
-import com.cj.paqman.PersonStatus
 import com.cj.paqman.Jackson
 
 class QualPeopleResource(val data:Data, val service:Service) extends HttpObject("/api/quals/{id}/people"){
@@ -17,11 +11,11 @@ class QualPeopleResource(val data:Data, val service:Service) extends HttpObject(
     val qualId = r.path().valueFor("id")
     data.qualifications.getHistory(qualId) match {
       case None =>BAD_REQUEST
-      case Some(qual)=>{
-        val result = data.users.toSeq.map(_.latest).flatMap{user=>
-          
-          val status = service.userStatus(qualId, user);
-          
+      case Some(qual)=>
+        val result = data.users.toSeq().map(_.latest).flatMap{user=>
+
+          val status = service.userStatus(qualId, user)
+
           if(status.hasPassedSomeChallenges || status.isAdministrator){
             Some(status)
           }else{
@@ -29,7 +23,6 @@ class QualPeopleResource(val data:Data, val service:Service) extends HttpObject(
           }
         }
         OK(Json(Jackson.generate(result)))
-      }
     }
   }
 }

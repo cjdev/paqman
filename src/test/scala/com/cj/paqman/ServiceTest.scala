@@ -4,7 +4,7 @@ import org.scalatest.FunSuite
 
 class ServiceTest extends FunSuite {
   class MockRecord[T](val history:T *) extends Record[T] {
-      def latest=history.last;
+      def latest=history.last
   }
   
   test("detects histories"){

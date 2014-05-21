@@ -12,11 +12,11 @@ object Jackson {
   
   def readJson[T](r:Representation)(implicit mf:Manifest[T]):T = {
     val bytes = new ByteArrayOutputStream()
-    r.write(bytes);
-    bytes.close();
+    r.write(bytes)
+    bytes.close()
     
-    mapper.readValue(bytes.toByteArray());
+    mapper.readValue(bytes.toByteArray)
   }
   
-  def generate(o:AnyRef) = Jackson.mapper.writeValueAsString(o);
+  def generate(o:AnyRef) = Jackson.mapper.writeValueAsString(o)
 }

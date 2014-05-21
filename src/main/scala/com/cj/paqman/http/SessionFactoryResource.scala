@@ -17,13 +17,12 @@ class SessionFactoryResource(val datas:Data, val authMechanism:AuthMechanism, va
         result match {
             case Some(userInfo) => service.getUserWithCreateIfNeeded(request.email) match {
                 case None => UNAUTHORIZED
-                case Some(user)=> {
-                    val sessionId = UUID.randomUUID().toString()
+                case Some(user)=>
+                    val sessionId = UUID.randomUUID().toString
                             datas.sessions.put(sessionId, Session(request.email))
                             OK(Json("""{
                                     "token":"""" + sessionId + """"
                                     }"""))
-                }
             }
             case None => UNAUTHORIZED()
         }

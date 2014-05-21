@@ -42,12 +42,12 @@ object Paqman {
             new HunksResource(datas=datas),
             new HunkResource(datas=datas),
             new QualPeopleResource(data=datas, service=service),
-            new ClasspathResourceObject("/", "/content/index.html", getClass()),
-            new ClasspathResourcesObject("/{resource*}", getClass(), "/content"),
+            new ClasspathResourceObject("/", "/content/index.html", getClass),
+            new ClasspathResourcesObject("/{resource*}", getClass, "/content"),
             new QualUIResource(data=datas)
-        );
+        )
         
-        println("paqman is alive and listening on port " + port);
+        println("paqman is alive and listening on port " + port)
     }
     
     def loadAuthMechanism(configFilePath:File) = if(configFilePath.exists()){
@@ -64,10 +64,10 @@ object Paqman {
     }
 }
 
-class QualUIResource (data:Data) extends ClasspathResourceObject("/{name}", "/content/qual.html", getClass()){
+class QualUIResource (data:Data) extends ClasspathResourceObject("/{name}", "/content/qual.html", getClass){
   override def get(r:Request) = {
     val name = URLDecoder.decode(r.path().valueFor("name"), "utf-8")
-    val maybeQual = data.qualifications.toSeq().map{_.latest}.find(_.name == name);
+    val maybeQual = data.qualifications.toSeq().map{_.latest}.find(_.name == name)
     maybeQual match {
       case Some(qual) => super.get(r);
       case None => null

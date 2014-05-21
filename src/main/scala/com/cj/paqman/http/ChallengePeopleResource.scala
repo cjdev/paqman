@@ -3,13 +3,7 @@ package com.cj.paqman.http
 import org.httpobjects._
 import org.httpobjects.DSL._
 import com.cj.paqman.Data
-import com.cj.paqman.Session
-import java.util.UUID
-import com.cj.paqman.Paqman
-import com.cj.paqman.AuthRequest
-import com.cj.paqman.AuthMechanism
 import com.cj.paqman.Service
-import com.cj.paqman.PersonStatus
 import com.cj.paqman.Jackson
 import com.cj.paqman.QualificationInfo
 
@@ -20,7 +14,7 @@ class ChallengePeopleResource (val data:Data, val service:Service) extends  Http
     val emailAddress = Jackson.readJson[String](r.representation())
     data.qualifications.get(qualId) match {
       case None =>BAD_REQUEST()
-      case Some(qual)=>{
+      case Some(qual)=>
         val user = service.getUserWithCreateIfNeeded(emailAddress).get
         def isThis(q:QualificationInfo) = q.id == qualId
         
@@ -31,7 +25,6 @@ class ChallengePeopleResource (val data:Data, val service:Service) extends  Http
         val updatedQual = qualInfo.copy(passedChallenges = passedChallenges)
         data.users.put(emailAddress, user.copy(qualifications=otherQuals :+ updatedQual))
         OK(Text("yo"))
-      }
     }
   }
 }

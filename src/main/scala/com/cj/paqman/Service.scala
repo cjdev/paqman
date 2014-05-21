@@ -49,7 +49,7 @@ class Service(val datas:Data, val authMechanism:AuthMechanism) {
             }
           }
           
-          val isPassed = acceptableVersions.map(_.id).find(i.passedChallenges.contains(_)).isDefined
+          val isPassed = acceptableVersions.map(_.id).exists(i.passedChallenges.contains)
           isPassed
         }
       }
@@ -58,14 +58,13 @@ class Service(val datas:Data, val authMechanism:AuthMechanism) {
     def hunkHistories(qual:Record[Qual]) = {
       
       val currentHunks = qual.latest.hunks.map{latestH=>
-          val hunkHistory = qual.history.reverse.tail.foldLeft(List[Hunk](latestH)){(hunksSoFar, q) =>
+          val hunkHistory = qual.history().reverse.tail.foldLeft(List[Hunk](latestH)){(hunksSoFar, q) =>
             
             hunksSoFar.last.replacementInfo match {
               case None=> hunksSoFar
-              case Some(r) => {
+              case Some(r) =>
                 val h = q.hunks.find(_.id == r.replacesId).get
                 hunksSoFar :+ h
-              }
             }
           }
           
@@ -82,9 +81,9 @@ class Service(val datas:Data, val authMechanism:AuthMechanism) {
         case Some(userQualInfo)=>userQualInfo.passedChallenges.size>0
       }
       
-      val versionsPassed = qual.history.filter(user.hasPassed(_))
+      val versionsPassed = qual.history().filter(user.hasPassed)
       
-      val passedVersions = qual.history.filter(user.hasPassed(_))
+      val passedVersions = qual.history().filter(user.hasPassed)
       
       val wasCurrent = !passedVersions.isEmpty
       
@@ -92,9 +91,8 @@ class Service(val datas:Data, val authMechanism:AuthMechanism) {
       val currentHunks = hunkHistories(qual)
       
       val isCurrent = maybeUserQualInfo match {
-        case Some(qualInfo)=>{
+        case Some(qualInfo)=>
           currentHunks.forall{i=> i.isPassed(qualInfo)}
-        }
         case None=>false
       }
       val latestSignificantVersions = currentHunks.map(_.lastSignificantEdit)
@@ -104,7 +102,7 @@ class Service(val datas:Data, val authMechanism:AuthMechanism) {
       val foo = maybeUserQualInfo match {
           case None=>false
           case Some(userQualInfo)=> userQualInfo.passedChallenges.map{hunkId=>
-            qual.history.find{q=>
+            qual.history().find{q=>
                 val maybeMatchingHunk = q.hunks.find{h=>
                   val isReplacement = h.replacementInfo match {
                     case None => false
