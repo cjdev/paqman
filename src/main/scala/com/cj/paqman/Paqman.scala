@@ -66,7 +66,7 @@ object Paqman {
 
 class QualUIResource (data:Data) extends ClasspathResourceObject("/{name}", "/content/qual.html", getClass()){
   override def get(r:Request) = {
-    val name = URLDecoder.decode(r.path().valueFor("name"))
+    val name = URLDecoder.decode(r.path().valueFor("name"), "utf-8")
     val maybeQual = data.qualifications.toSeq().map{_.latest}.find(_.name == name);
     maybeQual match {
       case Some(qual) => super.get(r);
