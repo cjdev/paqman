@@ -128,7 +128,9 @@ define(["jquery", "jqueryui", "util"], function($,jqueryui, util){
         });
 
         var loginDiv = $(".login");
-        loginDiv.find("button").click(function() {
+        var loginButton = loginDiv.find("button");
+
+        loginButton.click(function() {
             var loginErrorsText = loginDiv.find(".errors");
             var emailField = loginDiv.find(".email");
             var passwordField = loginDiv.find(".password");
@@ -139,8 +141,6 @@ define(["jquery", "jqueryui", "util"], function($,jqueryui, util){
                     email : emailField.val(),
                     password : passwordField.val()
             };
-
-            console.log(request);
 
             $.ajax({
                 type : "POST",
@@ -158,5 +158,13 @@ define(["jquery", "jqueryui", "util"], function($,jqueryui, util){
                 }
             });
         });
+
+        var clickLoginButton = function(event) {
+            if(event.keyCode == 13){
+                loginButton.click();
+            }
+        };
+        loginDiv.find(".email").keyup(clickLoginButton);
+        loginDiv.find(".password").keyup(clickLoginButton);
     });
 });
