@@ -1,12 +1,10 @@
 package com.cj.paqman
 
-import org.junit.Test
-import org.junit.Assert._
+import org.scalatest.FunSuite
 
-class QualTest {
+class QualTest extends FunSuite{
 
-  @Test
-  def usersWhoHaveNotPassedTheChallengeAreNotQualified(){
+  test("users who have not passed the challenge are not qualified") {
     // given
     val challenge = Hunk(kind="challenge", name="challenge a", description="A", whenAdded=1, replacementInfo=None)
     
@@ -19,6 +17,6 @@ class QualTest {
     val result = qual.hasPassed(q)
     
     // then
-    assertEquals(false, result)
+    assert(result === false)
   }
 }

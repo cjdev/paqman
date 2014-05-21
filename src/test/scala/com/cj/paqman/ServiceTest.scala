@@ -1,15 +1,13 @@
 package com.cj.paqman
 
-import org.junit.Test
-import org.junit.Assert._
+import org.scalatest.FunSuite
 
-class ServiceTest {
+class ServiceTest extends FunSuite {
   class MockRecord[T](val history:T *) extends Record[T] {
       def latest=history.last;
   }
   
-  @Test
-  def detectsHistories(){
+  test("detects histories"){
     // given
     val service = new Service(null, null)
     val challengeV1 = Hunk(kind="challenge", name="version 1", description="A", whenAdded=1, replacementInfo=None)
@@ -23,12 +21,11 @@ class ServiceTest {
     val result = service.hunkHistories(record)
     
     // then
-    assertEquals(1, result.size)
-    assertEquals(2, result(0).versions.size)
+    assert(result.size === 1)
+    assert(result(0).versions.size === 2)
   }
   
-  @Test
-  def detectsStatusOfUsersWhoHaveLapsed(){
+  test("detects status of users who have lapsed"){
     // given
     val service = new Service(null, null)
     val challengeV1 = Hunk(kind="challenge", name="challenge a", description="A", whenAdded=1, replacementInfo=None)
@@ -46,14 +43,13 @@ class ServiceTest {
     val result = service.userStatus(record, user)
     
     // then
-    assertEquals(true, result.wasCurrent)
-    assertEquals(false, result.isCurrent)
-    assertEquals(true, result.hasPassedSomeChallenges)
-    assertEquals(Seq(), result.passedChallenges)
+    assert(result.wasCurrent === true)
+    assert(result.isCurrent === false)
+    assert(result.hasPassedSomeChallenges === true)
+    assert(result.passedChallenges === Seq())
   }
   
-  @Test
-  def usersWhoHaveNeverCompletedAQualAreNotLapsed(){
+  test("users who have never completed a qual are not lapsed"){
     // given
     val service = new Service(null, null)
     val hunkA = Hunk(kind="challenge", name="challenge a", description="A", whenAdded=1, replacementInfo=None)
@@ -69,14 +65,13 @@ class ServiceTest {
     val result = service.userStatus(record, user)
     
     // then
-    assertEquals(false, result.wasCurrent)
-    assertEquals(false, result.isCurrent)
-    assertEquals(false, result.hasPassedSomeChallenges)
-    assertEquals(Seq(), result.passedChallenges)
+    assert(result.wasCurrent === false)
+    assert(result.isCurrent === false)
+    assert(result.hasPassedSomeChallenges === false)
+    assert(result.passedChallenges === Seq())
   }
   
-  @Test
-  def challengesAreStillPassedIfSubsequentEditsAreNotSignificant(){
+  test("challenges are still passed if subsequent edits are not significant"){
     // given
     val service = new Service(null, null)
     val theHunkBefore = Hunk(kind="challenge", name="do it", description="like this", whenAdded=1, replacementInfo=None)
@@ -93,9 +88,9 @@ class ServiceTest {
     val result = service.userStatus(record, user)
     
     // then
-    assertEquals(true, result.wasCurrent)
-    assertEquals(true, result.isCurrent)
-    assertEquals(true, result.hasPassedSomeChallenges)
-    assertEquals(true, result.passedChallenges.contains(HunkInfo(id=theHunkBefore.id, name=theHunkBefore.name)))
+    assert(result.wasCurrent === true)
+    assert(result.isCurrent === true)
+    assert(result.hasPassedSomeChallenges === true)
+    assert(result.passedChallenges.contains(HunkInfo(id=theHunkBefore.id, name=theHunkBefore.name)) === true)
   }
 }
