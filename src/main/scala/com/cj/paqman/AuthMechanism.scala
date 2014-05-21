@@ -5,4 +5,7 @@ trait AuthMechanism {
     def emailExists(email:String):Boolean
 }
 
-case class AuthDetails
+trait AuthDetails
+
+//can't have case classes with no members, so this will have to do for now
+case object AuthDetailsPlaceholder extends AuthDetails

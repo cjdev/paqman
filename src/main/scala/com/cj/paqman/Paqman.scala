@@ -1,30 +1,20 @@
 package com.cj.paqman
 
-import java.io.ByteArrayOutputStream
 import java.net.URLDecoder
-import java.util.UUID
-import scala.reflect.BeanProperty
-import org.httpobjects.DSL._
-import org.httpobjects.HttpObject
-import org.httpobjects.Representation
 import org.httpobjects.Request
 import org.httpobjects.jetty.HttpObjectsJettyHandler
 import org.httpobjects.util.ClasspathResourceObject
 import org.httpobjects.util.ClasspathResourcesObject
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
-import java.io.File
-import org.apache.commons.io.FileUtils
 import com.cj.paqman.http._
+import java.io.File
 
-case class AuthRequest(val email:String, val password:String)
-case class UserQualStatus(val id:String, val isQualified:Boolean, val challengesMet:Set[String])
-case class SessionInfo(val email:String, val qualifications:Seq[UserQualStatus])
-case class QualSummary(val id:String, val name:String, val description:String, val ref:String)
-case class Session(val email:String)
-case class QualDto(val id:String , val name:String, val description:String, val hunks:Seq[Hunk], val administrator:String, val proctors:Seq[String]){
-  def this(q:Qual, proctors:Seq[String]) = this(id = q.id, name=q.name, description = q.description, hunks = q.hunks, administrator = q.administrator, proctors=proctors)
+case class AuthRequest(email:String, password:String)
+case class UserQualStatus(id:String, isQualified:Boolean, challengesMet:Set[String])
+case class SessionInfo(email:String, qualifications:Seq[UserQualStatus])
+case class QualSummary(id:String, name:String, description:String, ref:String)
+case class Session(email:String)
+case class QualDto(id:String , name:String, description:String, hunks:Seq[Hunk], administrator:String, proctors:Seq[String]){
+  def this(q:Qual, proctors:Seq[String]) = this(q.id,q.name,q.description,q.hunks,q.administrator,proctors)
 }
 case class HunkInfo(id:String, name:String)
 case class PersonStatus(email:String, isAdministrator:Boolean,
@@ -68,7 +58,7 @@ object Paqman {
               ldapPassword = config.ldapPassword)
     }else{
       new AuthMechanism(){
-        def authenticateEmail(email:String, password:String) = Option(AuthDetails())
+        def authenticateEmail(email:String, password:String) = Option(AuthDetailsPlaceholder)
             def emailExists(email:String) = true
       }
     }

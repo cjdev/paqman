@@ -61,7 +61,7 @@ class LdapTool (url:String, ldapUser:String, ldapPassword:String) extends AuthMe
                   val passwordIsGood = authenticate(user.getName, password)
                   if(passwordIsGood){
                     // user
-                    Some(AuthDetails())
+                    Some(AuthDetailsPlaceholder)
                   }else{
                     None
                   }
