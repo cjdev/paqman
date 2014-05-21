@@ -5,9 +5,8 @@ case class QualificationInfo(id:String, passedChallenges:Set[String] = Set()){
   def hasPassed(db:Database[Qual]) = {
     db.get(id) match {
       case None=> false
-      case Some(qual) => {
+      case Some(qual) =>
         qual.hasPassed(this)
-      }
     }
     
   }
