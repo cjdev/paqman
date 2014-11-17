@@ -231,10 +231,6 @@ a.user-list-item {
     height: 0;
 }
 
-.clearfix {
-    display: inline-block;
-}
-
 .add-hunk-dialog {
     width:600px;
 }
@@ -281,7 +277,6 @@ a.user-list-item {
     width:100%;
     height:450px;
     display:block;
-    border:0;
 }
 
 .edit-hunk-dialog .content-field-holder {
@@ -353,4 +348,25 @@ a.user-list-item {
 }
 .hunk-editing-dialog input[type="radio"] {
     display:block;
+}
+
+.challengeYetToDo {
+	margin-left:20px;
+    font-style: italic;
+}
+.challengeYetToDo .doneMarker, .challengeYetToDo .notDoneMarker {
+	 display:inline-block;
+     width:1em;
+     height:1em;
+     margin-right:5px;
+}
+.challengeYetToDo .doneMarker {
+     background:url('checkmark.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.challengeYetToDo .notDoneMarker {
+     background:url('checkbox.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }

@@ -1,4 +1,4 @@
-define(["jquery", "jqueryui", "util"], function($,jqueryui, util){
+define(["jquery", "underscore", "jqueryui", "util"], function($, _, jqueryui, util){
     function AddQualificationDialog(userInfo, onSuccess){
         var view, nameField, createButton, descriptionField;
 
@@ -71,7 +71,12 @@ define(["jquery", "jqueryui", "util"], function($,jqueryui, util){
                             var list = entry.find(".users-list");
                             $.each(people, function(idx, person){
                                 var status;
-                                var statistics = person.passedChallenges.length + "/" + (person.passedChallenges.length + person.challengesYetToDo.length);
+                                var isCurrent = function(c){return c.isCurrent;};
+                                var passedChallenges = _.filter(person.challenges, isCurrent);
+                                console.log("negate is ", _.negate);
+                                
+                                var challengesYetToDo = _.filter(person.challenges, _.negate(isCurrent));
+                                var statistics = passedChallenges.length + "/" + (passedChallenges.length + challengesYetToDo.length);
                                 if(person.isAdministrator){
                                     status = "administrator";
                                 } else if(person.isCurrent){
@@ -81,7 +86,20 @@ define(["jquery", "jqueryui", "util"], function($,jqueryui, util){
                                 }else{
                                     status = "partial (" + statistics + ")";
                                 }
-                                list.append('<div class="user-status-list-entry">' + person.email + ' | ' + status + '</div>');
+                                
+                                var userStatusListEntry = $('<div class="user-status-list-entry">' + person.email + ' | ' + status + '</div>');
+                                if(!person.isAdministrator){
+                                    var todo = $('<div class="challengeYetToDo"/>');
+                                    $.each(passedChallenges, function(idx, challenge){
+                                        todo.append('<div><div class="doneMarker"></div>' + challenge.name + "</div>");
+                                    });
+                                    $.each(challengesYetToDo, function(idx, challenge){
+                                        todo.append('<div><div class="notDoneMarker"></div>' + challenge.name + "</div>");
+                                    });
+                                    todo.appendTo(userStatusListEntry);
+                                    
+                                }
+                                userStatusListEntry.appendTo(list);
                             });
                             list.slideDown(function(){
                                 qualStatusLinks.slideUp();

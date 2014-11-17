@@ -6,7 +6,7 @@
 
     <properties>
         <httpobjects-version>0.5.0</httpobjects-version>
-        <jackson-version>2.2.2</jackson-version>
+        <jackson-version>2.4.4</jackson-version>
     </properties>
 
     <build>
@@ -161,7 +161,7 @@
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-scala_2.10</artifactId>
+            <artifactId>jackson-module-scala_2.11</artifactId>
             <version>${jackson-version}</version>
         </dependency>
         <dependency>

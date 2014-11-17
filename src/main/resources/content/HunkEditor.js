@@ -6,7 +6,7 @@ define(["util", 'HunkEditingDialog'], function(util, HunkEditingDialog){
         tabs = dialogView.find(".hunk-editor-tabs"),
         saveButton = dialogView.find(".save-button"),
         deleteButton = dialogView.find(".delete-button"),
-        url = "/api/quals/" + qual.id + "/hunks/" + hunk.id;
+        url = "/api/quals/" + qual.id + "/hunks/" + hunk.hunkId;
     
         tabs.show();
     
@@ -34,10 +34,7 @@ define(["util", 'HunkEditingDialog'], function(util, HunkEditingDialog){
             hunk.description = contentField.val();
             HunkEditingDialog(function(isSignificant){
                 console.log("isSignificant:" + isSignificant);
-                hunk.replacementInfo = {
-                        isSignificantEdit:isSignificant,
-                        replacesId:hunk.id
-                };
+                hunk.isSignificantEdit = isSignificant;
                 
                 $.ajax(url, {
                     type:"PUT",

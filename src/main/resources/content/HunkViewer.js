@@ -73,7 +73,7 @@ define(["util"], function(util){
                                 confirmationScreen.hide(function(){
                                     var challengerName = challengerNameField.val();
                                     console.log("Challenger is " + challengerName + " (" + challengerNameField.length + ")");
-                                    var url = "/api/quals/" + qual.id + "/challenges/" + hunk.id + "/people";
+                                    var url = "/api/quals/" + qual.id + "/challenges/" + hunk.hunkId + "/people";
                                     $.post(url, JSON.stringify(challengerName), function(){
                                         messagesDiv.empty().text("Action Successful!").show();
                                         setTimeout(function(){

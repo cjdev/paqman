@@ -3,7 +3,7 @@ define(["util", "AddHunkDialog", "HunkViewer", "HunkEditor"], function(util, Add
         var view = util.getTemplate("/HunkScreen.html");
         
         function refreshData(){
-            var url = "/api/quals/" + qual.id + "/hunks/" + hunk.id;
+            var url = "/api/quals/" + qual.id + "/hunks/" + hunk.hunkId;
             $.ajax(url, {
                 type:"get",
                 async:false,

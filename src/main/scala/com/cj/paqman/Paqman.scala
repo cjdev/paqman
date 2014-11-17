@@ -7,21 +7,24 @@ import org.httpobjects.util.ClasspathResourceObject
 import org.httpobjects.util.ClasspathResourcesObject
 import com.cj.paqman.http._
 import java.io.File
+import org.httpobjects.HttpObject
 
 case class AuthRequest(email:String, password:String)
 case class UserQualStatus(id:String, isQualified:Boolean, challengesMet:Set[String])
 case class SessionInfo(email:String, qualifications:Seq[UserQualStatus])
 case class QualSummary(id:String, name:String, description:String, ref:String)
 case class Session(email:String)
-case class QualDto(id:String , name:String, description:String, hunks:Seq[Hunk], administrator:String, proctors:Seq[String]){
+case class QualDto(id:String , name:String, description:String, hunks:Seq[HunkVersion], administrator:String, proctors:Seq[String]){
   def this(q:Qual, proctors:Seq[String]) = this(q.id,q.name,q.description,q.hunks,q.administrator,proctors)
 }
 case class HunkInfo(id:String, name:String)
-case class PersonStatus(email:String, isAdministrator:Boolean,
-            isCurrent:Boolean, wasCurrent:Boolean, 
-            hasPassedSomeChallenges:Boolean, 
-            passedChallenges:Seq[HunkInfo],
-            challengesYetToDo:Seq[HunkInfo])
+case class PersonStatus(
+			email:String, 
+			isAdministrator:Boolean,
+            isCurrent:Boolean, 
+            wasCurrent:Boolean, 
+            challenges:Seq[ChallengeStatus])
+case class ChallengeStatus(challengeId:String, name:String, hasPassed:Boolean, isCurrent:Boolean)
   
 object Paqman {
   
@@ -35,9 +38,9 @@ object Paqman {
         
         HttpObjectsJettyHandler.launchServer(port,
             new SessionFactoryResource(datas=datas, authMechanism=authMechanism, service=service),
-            new SessionResource(data=datas),
+            new SessionResource(data=datas, service=service),
             new QualificationsResource(datas=datas, service=service),
-            new QualResource(datas=datas),
+            new QualResource(datas=datas, service=service),
             new ChallengePeopleResource(data=datas, service=service),
             new HunksResource(datas=datas),
             new HunkResource(datas=datas),

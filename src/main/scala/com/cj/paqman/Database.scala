@@ -16,7 +16,7 @@ trait Record[T] {
   def history():Seq[T]
 }
 
-class Database[T <: AnyRef](val d:File, val t:Class[T]){
+class Database[T <: AnyRef](val d:File, val t:Class[T]) extends DatabaseInterface[T]{
   val valuesDir = new File(d, "versions")
   val historiesDir = new File(d, "histories")
   valuesDir.mkdirs()

@@ -1,55 +1,32 @@
 package com.cj.paqman
 
 import java.util.UUID
+import com.cj.paqman.api.HunkDto
 
-case class Qual(id:String = UUID.randomUUID().toString, name:String, description:String, hunks:Seq[Hunk], administrator:String) {
-  def hasPassed(userHistory:QualificationInfo):Boolean = {
-    if(userHistory.id == id){
-//      val challenges = 
-      val allChallenges = hunks.filter(_.kind == "challenge")
-      if(allChallenges.size==0){false}else{
-          val meaningfulChallenges = allChallenges.filter(_.replacementInfo match {
-          case None => true
-          case Some(replacementInfo) => replacementInfo.isSignificantEdit
-          })
-          
-          val idsOfMeaningfulChallenges = meaningfulChallenges.map(_.id).toSet
-          val passedChallengeIds = idsOfMeaningfulChallenges.filter(userHistory.passedChallenges.contains)
-          idsOfMeaningfulChallenges.size==passedChallengeIds.size
-      }
-    }else{
-      false
-    }
-  }
-  
-  def hunkOrReplacmentForHunk(hunkId:String) = {
-    val maybeMatchingHunk = hunks.find{h=>
-      val isReplacement = h.replacementInfo match {
-        case None => false
-        case Some(replacementInfo)=>replacementInfo.replacesId == hunkId
-      }
-      val isHunk = h.id == hunkId
-      isHunk || isReplacement
-    }
-    maybeMatchingHunk
-  }
-      
-  
+case class Qual(id:String = UUID.randomUUID().toString, name:String, description:String, hunks:Seq[HunkVersion], administrator:String) {
 }
 
 case class HunkReplacementInfo(
     isSignificantEdit:Boolean,
     replacesId:String)
 
-case class Hunk(
-    id:String = UUID.randomUUID().toString,
+case class HunkVersion(
+    hunkId:String,
+    versionId:String,
     kind:String,
     name:String,
     url:String = "",
     description:String = "",
     whenAdded:Long,
-    replacementInfo:Option[HunkReplacementInfo]
+    isSignificantEdit:Boolean
 ){
-  def updateFrom(hunk:Hunk, now:Long) = copy(id=UUID.randomUUID().toString, name=hunk.name, url = hunk.url, description = hunk.description, whenAdded = now, replacementInfo=hunk.replacementInfo)
-  def toHunkInfo=HunkInfo(id=id, name=name)
+  def withUpdatesFromDto(dto:HunkDto, now:Long) = copy(
+		  	versionId=UUID.randomUUID().toString, 
+		  	name=dto.name, 
+		  	url = dto.url, 
+		  	description = dto.description, 
+		  	whenAdded = now, 
+		  	isSignificantEdit = dto.isSignificantEdit)
+  def toHunkInfo=HunkInfo(id=hunkId, name=name)
+  def toDto() = HunkDto(name=name, kind=kind, description=description, url=url, isSignificantEdit=isSignificantEdit)
 }

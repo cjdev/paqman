@@ -5,7 +5,7 @@ import org.httpobjects.DSL._
 import com.cj.paqman.Data
 import com.cj.paqman.Service
 import com.cj.paqman.Jackson
-import com.cj.paqman.QualificationInfo
+import com.cj.paqman.ChallengePassedEvent
 
 class ChallengePeopleResource (val data:Data, val service:Service) extends  HttpObject("/api/quals/{id}/challenges/{challengeId}/people"){
   override def post(r:Request) = {
@@ -16,15 +16,19 @@ class ChallengePeopleResource (val data:Data, val service:Service) extends  Http
       case None =>BAD_REQUEST()
       case Some(qual)=>
         val user = service.getUserWithCreateIfNeeded(emailAddress).get
-        def isThis(q:QualificationInfo) = q.id == qualId
+        qual.hunks.find(_.hunkId == challengeId) match {
+          case None => BAD_REQUEST(Text(s"NO SUCH CHALLENGE: $challengeId"))
+          case Some(challenge)=>{
+        	  val event = ChallengePassedEvent(qualId=qualId, challengeId=challengeId, challengeVersion=challenge.versionId, when=System.currentTimeMillis())
+        			  
+			  data.users.put(emailAddress, user.copy(events=user.events :+ event))
+        			  
+			  OK(Text("yo"))
+          }
+        }
         
-        val qualInfo:QualificationInfo = user.qualifications.find(isThis).getOrElse(new QualificationInfo(id=qualId))
-        val otherQuals = user.qualifications.filterNot(isThis)
         
-        val passedChallenges = qualInfo.passedChallenges + challengeId
-        val updatedQual = qualInfo.copy(passedChallenges = passedChallenges)
-        data.users.put(emailAddress, user.copy(qualifications=otherQuals :+ updatedQual))
-        OK(Text("yo"))
+        
     }
   }
 }
