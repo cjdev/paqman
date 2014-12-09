@@ -29,28 +29,28 @@ define(["util", "AddHunkDialog", "HunkScreen"], function(util, AddHunkDialog, Hu
         }
         
         if(userIsQualAdministrator){
-        	var qualAdminLabel = view.find(".qual-admin");
-        	qualAdminLabel.text(qual.administrator);
-        	util.makeEditable(qualAdminLabel, view.find(".edit-admin-control"), function(newEmail){
-        		if(qual.administrator !== newEmail){
-        			qual.administrator = newEmail;
-        			
-        			$.ajax({
-        	            type : "PUT",
-        	            url : ref,
-        	            async : false,
-        	            data:JSON.stringify(qual),
-        	            success : function(data) {
-            				window.location.reload();
-        	            },
-        	            error:function(xhr, textStatus, errorThrown ){
-        	            	alert(xhr.responseText);
-        	            }
-        	        });
-        			
-        		}
-        	});
-        	
+            var qualAdminLabel = view.find(".qual-admin");
+            qualAdminLabel.text(qual.administrator);
+            util.makeEditable(qualAdminLabel, view.find(".edit-admin-control"), function(newEmail){
+                if(qual.administrator !== newEmail){
+                    qual.administrator = newEmail;
+                    
+                    $.ajax({
+                        type : "PUT",
+                        url : ref,
+                        async : false,
+                        data:JSON.stringify(qual),
+                        success : function(data) {
+                            window.location.reload();
+                        },
+                        error:function(xhr, textStatus, errorThrown ){
+                            alert(xhr.responseText);
+                        }
+                    });
+                    
+                }
+            });
+            
             util.makeEditable(qualName, view.find(".edit-name-control"), function(newName){
                 qual.name = newName;
                 util.putJson(ref, qual);
