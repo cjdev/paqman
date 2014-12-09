@@ -62,7 +62,7 @@ define(["jquery", "underscore", "jqueryui", "util"], function($, _, jqueryui, ut
                 
                 $.each(quals, function(idx, qual){
                     var entry = $('<li>' +
-                            '<a class="qual-title" href="/' + qual.name + '">' + qual.name + '</a>' + 
+                            '<p class="qual-title-band"><a class="qual-title" href="/' + qual.name + '">' + qual.name + '</a><img class="user-qualification-emblem" style="display:none;" src="/gold-star.png" class="star-emblem"/></p>' + 
                             '<span class="qual-description">' + qual.description +
                             '<div class="users-list" style=""></div>' +
                             '<span class="qual-status-links"><a class="more-link" href="">details</a></span>' +
@@ -131,7 +131,7 @@ define(["jquery", "underscore", "jqueryui", "util"], function($, _, jqueryui, ut
                     qualsList.append(entry);
 
                     if(util.userHasQualification(userInfo, qual)){
-                        entry.append('<img src="/gold-star.png" class="star-emblem"/>');
+                        entry.find(".user-qualification-emblem").show();
                     }
                 });
 

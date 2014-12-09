@@ -6,6 +6,12 @@ blockquote {
     font-style: italic;
 }
 
+.user-qualification-emblem {
+	width: 1.5em;
+	height: 1.5em;
+	display: inline;
+	margin-left: .5em;
+}
 
 .qual-name {
     font-family:monospace;
@@ -142,8 +148,12 @@ blockquote {
     color:#3B4858;
     font-weight:bold;
     font-size:150%;
-    display:block;
     text-decoration: initial;
+}
+
+.qual-title-band {
+	display:block;
+	margin:0px;
 }
 
 .qual-description {

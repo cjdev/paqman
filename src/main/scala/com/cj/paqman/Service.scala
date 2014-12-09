@@ -63,10 +63,12 @@ class Service(val datas:DataInterface, val authMechanism:AuthMechanism) {
       val priorHistory = record.history.takeWhile(!_.eq(qual))
       val h = priorHistory :+ qual
       val hunkHistoriesUpToThisPoint = this.hunkHistories(versionsEarliestToLatest = h)
+      val challenges = hunkHistoriesUpToThisPoint.filter(_.latestVersion.kind =="challenge")
       
-      val hasPassedEachHunkAtThisPoint = hunkHistoriesUpToThisPoint.forall(_.isCurrent(user))
-      hasPassedEachHunkAtThisPoint && hunkHistoriesUpToThisPoint.size>0
+      val hasPassedEachChallengeAtThisPoint = challenges.forall(_.isCurrent(user))
+      hasPassedEachChallengeAtThisPoint && challenges.size>0
     }
+    
     def userStatus(qual:Record[Qual], user:UserInfo):PersonStatus = userStatus(qual, hunkHistories(qual.history), user)
     def userStatus(qual:Record[Qual], hunkHistories:List[HunkHistory], user:UserInfo):PersonStatus = {
       val qualId = qual.latest.id
