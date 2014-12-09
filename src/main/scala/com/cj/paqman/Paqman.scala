@@ -12,7 +12,7 @@ import org.httpobjects.HttpObject
 case class AuthRequest(email:String, password:String)
 case class UserQualStatus(id:String, isQualified:Boolean, challengesMet:Set[String])
 case class SessionInfo(email:String, qualifications:Seq[UserQualStatus])
-case class QualSummary(id:String, name:String, description:String, ref:String)
+case class QualSummary(id:String, name:String, description:String, administrator:String, ref:String)
 case class Session(email:String)
 case class QualDto(id:String , name:String, description:String, hunks:Seq[HunkVersion], administrator:String, proctors:Seq[String]){
   def this(q:Qual, proctors:Seq[String]) = this(q.id,q.name,q.description,q.hunks,q.administrator,proctors)

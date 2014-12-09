@@ -13,7 +13,7 @@ class QualificationsResource (datas:Data, service:Service) extends HttpObject("/
   override def get(r:Request) = {
     
     val summaries = datas.qualifications.toSeq().map(_.latest).map{qual=>
-      QualSummary(id = qual.id, name=qual.name, description = qual.description, ref= "/api/quals/" + qual.id)
+      QualSummary(id = qual.id, name=qual.name, description = qual.description, administrator = qual.administrator, ref= "/api/quals/" + qual.id)
     }
     OK(Json(Jackson.generate(summaries)))
   }

@@ -69,6 +69,19 @@ define([], function(){
         });
         return result;
     }
+    function putJson(ref, data){
+        var result;
+        $.ajax({
+            type : "PUT",
+            url : ref,
+            async : false,
+            data:JSON.stringify(data),
+            success : function(data) {
+                result = data;
+            }
+        });
+        return result;
+    }
     function listQuals(){
         return getJson("/api/quals");
     }
@@ -113,6 +126,52 @@ define([], function(){
         return result;
     }
     
+    
+    function makeEditable(item, editLink, onchange){
+        function hasFocus(){
+            return item.get(0) === document.activeElement;
+        }
+        function takeFocusAway(){
+            $(':focus').blur();//$('<div contenteditable="true"></div>').appendTo('body').focus().remove()
+        }
+        
+        function stopEditing(){
+            editLink.hide();
+            takeFocusAway();
+            item.removeAttr("contenteditable");
+            takeFocusAway();
+            
+            onchange(item.text());
+        }
+        
+        function handler(e){
+            var which = e.which || e.keyCode;
+            if(which == 13) {
+                e.preventDefault();
+                stopEditing();
+            }
+        }
+        
+        
+        item.on('keypress',handler);
+        item.mouseover(function(){
+            item.attr("contenteditable", "true");
+        });
+        item.mouseout(function(){
+            if(!hasFocus()){
+                item.removeAttr("contenteditable"); // this removes the auto-correct squigglies in mozilla when you mouseover after editing once already
+            }
+        });
+        item.click(function(){
+            editLink.show();
+        });
+        editLink.text('done');
+        editLink.hide();
+        editLink.click(_.compose(stopEditing, takeFocusAway));
+        item.blur(stopEditing);
+	}
+
+    
     return {
         getCookie:getCookie,
         slideLeftHide:slideLeftHide,
@@ -120,10 +179,12 @@ define([], function(){
         getTemplate:getTemplate,
         getText:getText,
         getJson:getJson,
+        putJson:putJson,
         listQuals:listQuals,
         getSessionInfo:getSessionInfo,
         userHasMetChallenge:userHasMetChallenge,
         userHasQualification:userHasQualification,
-        labels:labels
+        labels:labels,
+        makeEditable:makeEditable
     };
 });

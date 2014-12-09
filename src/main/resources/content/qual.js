@@ -66,7 +66,7 @@ define(["jquery", "util", "underscore", "QualScreen"],
             data : JSON.stringify(request),
             success:function(msg) {
                 var token = msg.token;
-                setCookie("SessionId", token);                
+                util.setCookie("SessionId", token);                
 
                 passwordField.val("");
                 showUI(true, util.getSessionInfo(token), token);

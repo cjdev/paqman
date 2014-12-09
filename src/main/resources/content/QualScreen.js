@@ -2,10 +2,13 @@ define(["util", "AddHunkDialog", "HunkScreen"], function(util, AddHunkDialog, Hu
     return function(ref, userInfo, sessionCookie, where){
         var view = util.getTemplate("/QualScreen.html");
         var mainSection = view.find(".content-body"),
-        qual = util.getJson(ref),
-        qualEditingControls = view.find(".qual-editing-controls"),
-        addHunkButton = view.find(".add-hunk-button"),
-        userIsQualAdministrator = (qual.administrator === userInfo.email);
+            editNameLink = view.find(".edit-name-link"),
+            qual = util.getJson(ref),
+            qualEditingControls = view.find(".qual-editing-controls"),
+            addHunkButton = view.find(".add-hunk-button"),
+            qualName = view.find(".qual-name"),
+            qualDescription = view.find(".qual-description span"),
+            userIsQualAdministrator = (qual.administrator === userInfo.email);
     
         var content = view.find(".content");
     
@@ -17,14 +20,55 @@ define(["util", "AddHunkDialog", "HunkScreen"], function(util, AddHunkDialog, Hu
                 refreshHunksList();
             });
         });
-    
+        
+        function inputKeyUp(e) {
+            e.which = e.which || e.keyCode;
+            if(e.which == 13) {
+                // submit
+            }
+        }
+        
+        if(userIsQualAdministrator){
+        	var qualAdminLabel = view.find(".qual-admin");
+        	qualAdminLabel.text(qual.administrator);
+        	util.makeEditable(qualAdminLabel, view.find(".edit-admin-control"), function(newEmail){
+        		if(qual.administrator !== newEmail){
+        			qual.administrator = newEmail;
+        			
+        			$.ajax({
+        	            type : "PUT",
+        	            url : ref,
+        	            async : false,
+        	            data:JSON.stringify(qual),
+        	            success : function(data) {
+            				window.location.reload();
+        	            },
+        	            error:function(xhr, textStatus, errorThrown ){
+        	            	alert(xhr.responseText);
+        	            }
+        	        });
+        			
+        		}
+        	});
+        	
+            util.makeEditable(qualName, view.find(".edit-name-control"), function(newName){
+                qual.name = newName;
+                util.putJson(ref, qual);
+                window.location = "/" + newName;
+            });
+            util.makeEditable(qualDescription, view.find(".edit-description-control"), function(newDescription){
+                qual.description = newDescription;
+                util.putJson(ref, qual);
+            });
+        }
+        
         qualEditingControls.toggle(userIsQualAdministrator);
     
         view.find(".qual-title").text(qual.name);
         $(".user-details-area").fadeIn();
         
-        view.find(".qual-name").text(qual.name);
-        view.find(".qual-description").text('"' + qual.description + '"');
+        qualName.text(qual.name);
+        qualDescription.text(qual.description);
         
         content.html('');
         var hunksList = view.find(".qualification-hunks").find("ol");

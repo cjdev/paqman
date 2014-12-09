@@ -6,14 +6,14 @@ blockquote {
     font-style: italic;
 }
 
+
 .qual-name {
     font-family:monospace;
     font-weight:bold;
     text-decoration:none;
     color: #3B4858;
     font-size:2em;
-    margin: .5em;
-	
+	margin: .5em;
 }
 
 .hunk-editing-controls {
