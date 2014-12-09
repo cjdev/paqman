@@ -6,29 +6,62 @@ blockquote {
     font-style: italic;
 }
 
-.title {
+.qual-name {
     font-family:monospace;
-    font-size:48pt;
     font-weight:bold;
+    text-decoration:none;
     color: #3B4858;
+    font-size:2em;
+    margin: .5em;
+	
+}
+
+.hunk-editing-controls {
+	float:right;
+}
+
+
+.product-name, .title {
+    font-family:monospace;
+    font-size: 2.5em;
+    font-weight:bold;
     text-decoration:none;
 }
 
-.subtext {
+.product-name {
+	padding: .1em .25em .1em .25em;
+	display: inline-block;
+}
+
+
+.title {
+    color: #3B4858;
+}
+
+.foo {
+    font-family:monospace;
     font-style: italic;
-    vertical-align: top;
-    display: inline-block;
-    margin-left: 65px;
-    margin-top: 27px;
-    font-size: 12pt;
+    font-size: 1.5em;
+    margin-left:.25em;
+}
+
+.subtext {
+    font-family:monospace;
+    font-style: italic;
+    font-size: 1.5em;
 }
 
 .logo {
     height:200px;
 }
 
+.header a:visited, .header a {
+	color: white;
+}
 .header {
     border-bottom: 4px solid grey;
+    background: #3B4858;
+    color: white;
 }
 
 .tag {
@@ -46,7 +79,8 @@ blockquote {
 
 .user-details-area {
     position:absolute;
-    right:0;
+    right:1em;
+    top: 1em;
 }
 
 .qualification-hunks {
@@ -79,16 +113,19 @@ blockquote {
 .quals-list li{
     font-weight:bold;
     font-size:150%;
-    border:2px solid grey;
-    border-radius:5px;
     margin: 10px;
     padding: 5px;
+/*
+    border:2px solid grey;
+    border-radius:5px;
     background: #eeeeee;
+    */
     display:block;
 }
 
 .qual-status-links {
     display:block;
+    margin: .5em .5em 0em 0em;
 }
 .qual-status-links a {
     color:#3B4858;
@@ -99,13 +136,14 @@ blockquote {
     padding:0;
 }
 .qual-title:visited {
-    color:grey;
+    color: #3B4858;
 }
 .qual-title {
     color:#3B4858;
     font-weight:bold;
     font-size:150%;
     display:block;
+    text-decoration: initial;
 }
 
 .qual-description {
@@ -113,15 +151,25 @@ blockquote {
     font-size: 12pt;
     font-weight: normal;
     margin-top: 5px;
+    margin-left: .5em;
     display:block;
 }
 
 .user-status-list-entry {
     margin-left:10px;
+    margin-top: 1em;
+}
+
+
+h1 {
+    color:#3B4858;
+    font-size:2em;
 }
 
 body {
     font-family:monospace;
+    margin:0px;
+    padding:0px;
 }
 
 .content-holder {
@@ -129,7 +177,7 @@ body {
 }
 
 .content {
-    margin: 5px 5px 5px 220px;
+    margin: 5px 12px 5px 241px;
     text-align:center;
     display:block;
     font-family:serif;
@@ -198,15 +246,30 @@ a.user-list-item {
     width:30px;
 }
 
+
 .login {
     display: inline-block;
-    border: 1px solid grey;
-    padding: 28px;
     border-radius: 5px;
-    margin: 40px;
+    margin-top:2em;
+}
+
+.login-band {
+	width:100%;
     text-align: center;
 }
 
+.login input, .login button {
+	padding:.5em;
+	margin:1em 1em 1em 1em;
+	font-size:1em;
+}
+
+.login input {
+	display:block;
+}
+.login button {
+	display:inline-block;
+}
 .passed-hunk {
     background:rgb(178, 245, 178);
 }
@@ -316,7 +379,6 @@ a.user-list-item {
 }
 
 .content-body {
-    margin:20px;
     width:100%;
     text-align:left;
 }

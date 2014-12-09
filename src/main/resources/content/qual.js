@@ -4,10 +4,6 @@ define(["jquery", "util", "underscore", "QualScreen"],
     var sessionCookie = util.getCookie("SessionId");
 
     var name = "paqman";
-    var subtext = "capability aquisition and maintainance tool";
-
-    $(".title").text(name);
-    $(".subtext").text(subtext);
 
     function showUI(doShow, userInfo, sessionCookie) {
         $(".qualification-hunks, .content, .scoreboard, .quals-list-holder").toggle(doShow);
@@ -27,9 +23,6 @@ define(["jquery", "util", "underscore", "QualScreen"],
             var qualsList = $(".quals-list");
             qualsList.empty();
 
-            console.log("Whatever: " + qual.name);
-            $(".subtext").hide();
-            $(".title").text(qual.name);
             var screen = QualScreen(qual.ref, userInfo, sessionCookie, contentHolder);
 
             var hash = window.location.hash;
@@ -48,7 +41,7 @@ define(["jquery", "util", "underscore", "QualScreen"],
     }
 
     $(".logout").click(function(){
-        setCookie("SessionId", "");
+        util.setCookie("SessionId", "");
         window.location = "/";
     });
 

@@ -46,6 +46,7 @@ define(["jquery", "underscore", "jqueryui", "util"], function($, _, jqueryui, ut
         function showUI(doShow, userInfo, sessionCookie) {
             $(".qualification-hunks, .content, .scoreboard, .quals-list-holder").toggle(doShow);
             $(".login").toggle(!doShow);
+            $(".user-details-area").toggle(doShow);
 
             function showQualsList(){
                 var qualsListDiv, qualsList, contentHolder;
@@ -54,12 +55,17 @@ define(["jquery", "underscore", "jqueryui", "util"], function($, _, jqueryui, ut
                 qualsListDiv = $(".quals-list-holder");
                 qualsList = $(".quals-list");
                 qualsList.empty();
-
-                $.each(util.listQuals(), function(idx, qual){
+                
+                var quals = _.sortBy(util.listQuals(), function(i){
+                    return i.name.toLowerCase();
+                });
+                
+                $.each(quals, function(idx, qual){
                     var entry = $('<li>' +
-                            '<a class="qual-title" href="/' + qual.name + '">' + qual.name + '</a><span class="qual-description">' + qual.description +
-                            '<span class="qual-status-links">[<a class="more-link" href="">certifications</a>]</span>' +
-                            '<div class="users-list" style="display:none;border-top:2px solid grey;padding-top:5px;margin-top:5px;">People:</div>' +
+                            '<a class="qual-title" href="/' + qual.name + '">' + qual.name + '</a>' + 
+                            '<span class="qual-description">' + qual.description +
+                            '<div class="users-list" style=""></div>' +
+                            '<span class="qual-status-links"><a class="more-link" href="">details</a></span>' +
                     '</li>');
 
                     var qualStatusLinks = entry.find(".qual-status-links");
@@ -69,7 +75,18 @@ define(["jquery", "underscore", "jqueryui", "util"], function($, _, jqueryui, ut
 
                         $.get("/api/quals/" + qual.id + "/people", function(people){
                             var list = entry.find(".users-list");
-                            $.each(people, function(idx, person){
+                            
+                            function isAdmin(person){
+                                return person.isAdministrator;
+                            }
+                            
+                            var admins = _.filter(people, isAdmin);
+                            var nonAdmins = _.filter(people, _.negate(isAdmin));
+
+                            _.each(admins, renderPersonEntry);
+                            _.each(nonAdmins, renderPersonEntry);
+                            
+                            function renderPersonEntry(person){
                                 var status;
                                 var isCurrent = function(c){return c.isCurrent;};
                                 var passedChallenges = _.filter(person.challenges, isCurrent);
@@ -100,9 +117,9 @@ define(["jquery", "underscore", "jqueryui", "util"], function($, _, jqueryui, ut
                                     
                                 }
                                 userStatusListEntry.appendTo(list);
-                            });
+                            }
                             list.slideDown(function(){
-                                qualStatusLinks.slideUp();
+                                qualStatusLinks.hide();
                             });
                         });
 
