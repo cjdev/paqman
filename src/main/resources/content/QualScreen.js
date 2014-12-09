@@ -23,11 +23,8 @@ define(["util", "AddHunkDialog", "HunkScreen"], function(util, AddHunkDialog, Hu
         view.find(".qual-title").text(qual.name);
         $(".user-details-area").fadeIn();
         
-        console.log("name", qual.name);
-        
         view.find(".qual-name").text(qual.name);
         view.find(".qual-description").text('"' + qual.description + '"');
-//        $(".subtext").text(qual.description);
         
         content.html('');
         var hunksList = view.find(".qualification-hunks").find("ol");

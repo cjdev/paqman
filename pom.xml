@@ -7,6 +7,7 @@
     <properties>
         <httpobjects-version>0.5.0</httpobjects-version>
         <jackson-version>2.4.4</jackson-version>
+        <optimizer-build-config-file>require-optimizer-config.js</optimizer-build-config-file>
     </properties>
 
     <build>
@@ -120,8 +121,75 @@
                 </executions>
             </plugin>
         </plugins>
+        <pluginManagement>
+        	<plugins>
+        		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        		<plugin>
+        			<groupId>org.eclipse.m2e</groupId>
+        			<artifactId>lifecycle-mapping</artifactId>
+        			<version>1.0.0</version>
+        			<configuration>
+        				<lifecycleMappingMetadata>
+        					<pluginExecutions>
+        						<pluginExecution>
+        							<pluginExecutionFilter>
+        								<groupId>
+        									com.github.bringking
+        								</groupId>
+        								<artifactId>
+        									requirejs-maven-plugin
+        								</artifactId>
+        								<versionRange>
+        									[2.0.4,)
+        								</versionRange>
+        								<goals>
+        									<goal>optimize</goal>
+        								</goals>
+        							</pluginExecutionFilter>
+        							<action>
+        								<ignore></ignore>
+        							</action>
+        						</pluginExecution>
+        					</pluginExecutions>
+        				</lifecycleMappingMetadata>
+        			</configuration>
+        		</plugin>
+        	</plugins>
+        </pluginManagement>
     </build>
 
+	<profiles>
+		<profile>
+			<id>optimized</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.bringking</groupId>
+						<artifactId>requirejs-maven-plugin</artifactId>
+						<version>2.0.4</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>optimize</goal>
+								</goals>
+								<phase>compile</phase>
+							</execution>
+						</executions>
+						<configuration>
+							<configFile>
+								${basedir}/${optimizer-build-config-file}
+							</configFile>
+							<filterConfig>true</filterConfig>
+
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+
+			<activation>
+			</activation>
+		</profile>
+	</profiles>
 
     <dependencies>
         <dependency>
