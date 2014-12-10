@@ -108,9 +108,9 @@ define([], function(){
         var result = false;
 //        _.findWhere(userInfo.qualifications, )
         $.each(userInfo.qualifications, function(idx, q){
-            $.each(q.challengesMet, function(idx, challengeId){
-                if(theChallengeId == challengeId){
-                    result = true;
+            $.each(q.challenges, function(idx, challengeStatus){
+                if(theChallengeId == challengeStatus.challengeId){
+                    result = challengeStatus.isCurrent;
                 }
             });
         });
@@ -118,9 +118,9 @@ define([], function(){
     }
     function userHasQualification(userInfo, qual){
         var result = false;
-        var quals = userInfo.qualifications || [];
-        $.each(quals, function(idx, q){
-            if(q.id === qual.id && q.isQualified){
+        var userQualStates = userInfo.qualifications || [];
+        $.each(userQualStates, function(idx, userQualState){
+            if(userQualState.qualId === qual.id && userQualState.isCurrent){
                 result = true;
             }
         });

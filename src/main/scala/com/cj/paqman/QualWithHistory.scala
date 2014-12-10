@@ -13,7 +13,7 @@ class QualWithHistory(qual:Qual, record:Record[Qual]){
   def isCurrent(user:UserInfo) = currentChallenges.forall(_.isCurrent(user)) && currentChallenges.size>0
   def wasCurrent(user:UserInfo) = allVersions.exists(new QualWithHistory(_, record).isCurrent(user))
   
-  def userStatus(user:UserInfo):PersonStatus = {
+  def userStatus(user:UserInfo):QualPersonStatus = {
       val isAdministrator = record.latest.administrator == user.id
       
       val challengesStatus = currentChallenges.map{challenge=>
@@ -24,7 +24,8 @@ class QualWithHistory(qual:Qual, record:Record[Qual]){
             isCurrent = challenge.isCurrent(user))
       }
       
-      PersonStatus(email=user.id, 
+      QualPersonStatus(qualId = qual.id,
+                   email=user.id, 
                    isAdministrator=isAdministrator, 
                    isCurrent=isCurrent(user), 
                    wasCurrent=wasCurrent(user), 

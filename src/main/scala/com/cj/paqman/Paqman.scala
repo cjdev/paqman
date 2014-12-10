@@ -10,15 +10,15 @@ import java.io.File
 import org.httpobjects.HttpObject
 
 case class AuthRequest(email:String, password:String)
-case class UserQualStatus(id:String, isQualified:Boolean, challengesMet:Set[String])
-case class SessionInfo(email:String, qualifications:Seq[UserQualStatus])
+case class SessionInfo(email:String, qualifications:Seq[QualPersonStatus])
 case class QualSummary(id:String, name:String, description:String, administrator:String, ref:String)
 case class Session(email:String)
 case class QualDto(id:String , name:String, description:String, hunks:Seq[HunkVersion], administrator:String, proctors:Seq[String]){
   def this(q:Qual, proctors:Seq[String]) = this(q.id,q.name,q.description,q.hunks,q.administrator,proctors)
 }
 case class HunkInfo(id:String, name:String)
-case class PersonStatus(
+case class QualPersonStatus(
+            qualId:String,
 			email:String, 
 			isAdministrator:Boolean,
             isCurrent:Boolean, 

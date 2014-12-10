@@ -91,7 +91,7 @@ define(["util", "AddHunkDialog", "HunkScreen"], function(util, AddHunkDialog, Hu
             hunksList.empty();
             $.each(qual.hunks, function(idx, hunk){
                 var entry = $('<li class="' + hunk.hunkId + '" ><a href="#' + hunk.name + '">' + util.labels[hunk.kind] + ': ' + hunk.name + '</a></li>');
-                if(util.userHasMetChallenge(userInfo, hunk.id)){
+                if(util.userHasMetChallenge(userInfo, hunk.hunkId)){
                     entry.addClass("passed-hunk");
                 }
                 entry.click(function(){

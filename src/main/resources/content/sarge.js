@@ -62,11 +62,11 @@ define(["jquery", "underscore", "jqueryui", "util"], function($, _, jqueryui, ut
                 
                 $.each(quals, function(idx, qual){
                     var entry = $('<li>' +
-                            '<p class="qual-title-band"><a class="qual-title" href="/' + qual.name + '">' + qual.name + '</a><img class="user-qualification-emblem" style="display:none;" src="/gold-star.png" class="star-emblem"/></p>' + 
-                            '<span class="qual-description">' + qual.description +
-                            '<div class="users-list" style=""></div>' +
-                            '<span class="qual-status-links"><a class="more-link" href="">details</a></span>' +
-                    '</li>');
+                                      '<p class="qual-title-band"><a class="qual-title" href="/' + qual.name + '">' + qual.name + '</a><img class="user-qualification-emblem" style="display:none;" src="/gold-star.png" class="star-emblem"/></p>' + 
+                                      '<span class="qual-description">' + qual.description +
+                                      '<div class="users-list" style=""></div>' +
+                                      '<span class="qual-status-links"><a class="more-link" href="">details</a></span>' +
+                                  '</li>');
 
                     var qualStatusLinks = entry.find(".qual-status-links");
                     var moreLink = entry.find(".more-link");
