@@ -4,6 +4,7 @@ import org.httpobjects._
 import org.httpobjects.DSL._
 import com.cj.paqman.Data
 import com.cj.paqman.Service
+import com.cj.paqman.QualWithHistory
 import com.cj.paqman.Jackson
 
 class QualPeopleResource(val data:Data, val service:Service) extends HttpObject("/api/quals/{id}/people"){
@@ -13,9 +14,9 @@ class QualPeopleResource(val data:Data, val service:Service) extends HttpObject(
       data.qualifications.getHistory(qualId) match {
           case None =>BAD_REQUEST
           case Some(qual)=> {
-              val histories = service.hunkHistories(qual.history)
+              val pqual = new QualWithHistory(qual)
               val result = data.users.toSeq().map(_.latest).flatMap{user=>
-                  val status = service.userStatus(qual, histories, user)
+                  val status = pqual.userStatus(user)
                   
                   if(status.challenges.exists(_.hasPassed) || status.isAdministrator){
                       Some(status)

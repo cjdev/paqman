@@ -106,6 +106,7 @@ define([], function(){
     
     function userHasMetChallenge(userInfo, theChallengeId){
         var result = false;
+//        _.findWhere(userInfo.qualifications, )
         $.each(userInfo.qualifications, function(idx, q){
             $.each(q.challengesMet, function(idx, challengeId){
                 if(theChallengeId == challengeId){

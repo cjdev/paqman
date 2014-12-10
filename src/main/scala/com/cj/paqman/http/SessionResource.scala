@@ -20,7 +20,7 @@ class SessionResource (data:Data, service:Service) extends HttpObject("/api/sess
                     val qual = qualRecord.latest
                     UserQualStatus(
                       id=qual.id,
-                      isQualified=service.userHasPassed(user, qualRecord),
+                      isQualified=service.userIsCurrent(user, qualRecord),
                       challengesMet=Set()/* TODO: Figure out what to do here q.passedChallenges*/)
                   }
                   
